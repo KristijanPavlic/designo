@@ -15,6 +15,9 @@ export interface Translations {
     familykids: string
     christening: string
     birthdays: string
+    button: string
+    fullscreen: string
+    delete: string
   }
   about: {
     text1: string

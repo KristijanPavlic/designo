@@ -14,7 +14,10 @@
     "weddings": "Weddings",
     "familykids": "Family & kids",
     "christening": "Christening",
-    "birthdays": "Birthdays"
+    "birthdays": "Birthdays",
+    "button": "View more",
+    "fullscreen": "View in fullscreen",
+    "delete": "Delete image"
   },
   "about": {
     "text1": "lorem ipsum",

@@ -14,7 +14,10 @@
     "weddings": "Vjenčanja",
     "familykids": "Obitelj i djeca",
     "christening": "Krštenja",
-    "birthdays": "Rođendani"
+    "birthdays": "Rođendani",
+    "button": "Pogledaj sve",
+    "fullscreen": "Pogledaj u punom zaslonu",
+    "delete": "Obriši"
   },
   "about": {
     "text1": "lorem ipsum",

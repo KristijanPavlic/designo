@@ -6,7 +6,6 @@ export async function getTranslations(locale: string): Promise<Translations> {
   // Check if locale is valid
   if (!['hr', 'en'].includes(locale)) {
     console.error(`Invalid locale: ${locale}`)
-    return { home: { title: 'Welcome' } }
   }
 
   const filePath = path.join(
@@ -21,6 +20,7 @@ export async function getTranslations(locale: string): Promise<Translations> {
     return JSON.parse(fileContents) as Translations
   } catch (error) {
     console.error(`Error loading translations for locale ${locale}:`, error)
-    return { home: { title: 'Welcome' } } // Return a default translation if the file is not found or cannot be parsed
   }
+
+  return {} as Translations
 }
