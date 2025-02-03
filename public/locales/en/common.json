@@ -1,6 +1,62 @@
 {
-  "home": {
-    "title": "Welcome to our website!"
+  "navigation": {
+    "gallery": "Gallery",
+    "about": "About",
+    "contact": "Contact",
+    "instagram": "Instagram",
+    "facebook": "Facebook"
+  },
+  "hero": {
+    "title": "Timeless Memories, Perfectly Framed",
+    "cta": "Explore"
+  },
+  "categories": {
+    "weddings": "Weddings",
+    "familykids": "Family & kids",
+    "christening": "Christening",
+    "birthdays": "Birthdays"
+  },
+  "about": {
+    "text1": "lorem ipsum",
+    "text2": "lorem ipsum",
+    "text3": "lorem ipsum",
+    "info1": "photos & videos",
+    "info2": "clients",
+    "info3": "years of experience",
+    "reviews": {
+      "review1": {
+        "name": "Marina Bartulović",
+        "text": "The best photo booth aunt in the world! ❤️ Full of patience"
+      },
+      "review2": {
+        "name": "Lea Badovinac",
+        "text": "I was delighted with the adorable and professional photos"
+      },
+      "review3": {
+        "name": "Ivana Jurakic",
+        "text": "Kristina is professional, subtly present at all times"
+      },
+      "button": "Read Review"
+    }
+  },
+  "contact": {
+    "title": "Get in Touch with DESIGNO",
+    "text": "Whether you're looking for stunning photography or breathtaking videos, we're here to help you make it happen.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "button": "Send Message"
+    },
+    "info": {
+      "email": "fotovideo.designo@gmail.com",
+      "phone": "+385 (0) 98 921 0905",
+      "social": "Social networks"
+    }
+  },
+  "footer": {
+    "text": "© 2025 Foto & video DESIGNO. All Rights Reserved.",
+    "dashboard": "Dashboard",
+    "developedby": "Developed by KriPa Web"
   }
 }
-

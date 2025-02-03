@@ -1,6 +1,62 @@
 {
-  "home": {
-    "title": "Dobrodošli na našu web stranicu!"
+  "navigation": {
+    "gallery": "Galerija",
+    "about": "O nama",
+    "contact": "Kontakt",
+    "instagram": "Instagram",
+    "facebook": "Facebook"
+  },
+  "hero": {
+    "title": "Bezvremenske uspomene, savršeno uokvirene",
+    "cta": "Istraži"
+  },
+  "categories": {
+    "weddings": "Vjenčanja",
+    "familykids": "Obitelj i djeca",
+    "christening": "Krštenja",
+    "birthdays": "Rođendani"
+  },
+  "about": {
+    "text1": "lorem ipsum",
+    "text2": "lorem ipsum",
+    "text3": "lorem ipsum",
+    "info1": "fotografija i videozapisa",
+    "info2": "klijenata",
+    "info3": "godina iskustva",
+    "reviews": {
+      "review1": {
+        "name": "Marina Bartulović",
+        "text": "Najbolja teta fotkalica na svijetu! ❤️ Puna strpljenja"
+      },
+      "review2": {
+        "name": "Lea Badovinac",
+        "text": "Oduševila sam se preslatkim i profesionalnim fotografijama"
+      },
+      "review3": {
+        "name": "Ivana Jurakić",
+        "text": "Kristina je profesionalna, suptilno prisutna u svakom trenutku"
+      },
+      "button": "Pročitaj recenziju"
+    }
+  },
+  "contact": {
+    "title": "Kontaktirajte DESIGNO",
+    "text": "Bilo da tražite zadivljujuće fotografije ili očaravajuće videozapise, tu smo da vam pomognemo ostvariti to.",
+    "form": {
+      "name": "Ime",
+      "email": "E-mail",
+      "message": "Poruka",
+      "button": "Pošalji poruku"
+    },
+    "info": {
+      "email": "fotovideo.designo@gmail.com",
+      "phone": "+385 (0) 98 921 0905",
+      "social": "Društvene mreže"
+    }
+  },
+  "footer": {
+    "text": "© 2025 Foto & video DESIGNO. Sva prava pridržana.",
+    "dashboard": "Dashboard",
+    "developedby": "Developed by KriPa Web"
   }
 }
-
