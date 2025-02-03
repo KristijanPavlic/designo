@@ -4,7 +4,9 @@
     "about": "O nama",
     "contact": "Kontakt",
     "instagram": "Instagram",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "menu": "Izbornik",
+    "close": "Zatvori"
   },
   "hero": {
     "title": "Bezvremenske uspomene, savršeno uokvirene",
@@ -15,9 +17,7 @@
     "familykids": "Obitelj i djeca",
     "christening": "Krštenja",
     "birthdays": "Rođendani",
-    "button": "Pogledaj sve",
-    "fullscreen": "Pogledaj u punom zaslonu",
-    "delete": "Obriši"
+    "button": "Pogledaj sve"
   },
   "about": {
     "text1": "lorem ipsum",
@@ -56,6 +56,24 @@
       "phone": "+385 (0) 98 921 0905",
       "social": "Društvene mreže"
     }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "morning": "Dobro jutro",
+    "afternoon": "Dobar dan",
+    "evening": "Dobra večer",
+    "upload": "Učitaj medije",
+    "select": "Odaberi slike / videozapise",
+    "choose": "Odaberi datoteke",
+    "notchosen": "Nijedna datoteka nije odabrana",
+    "category": "Odaberi kategoriju",
+    "button": "Pošalji",
+    "uploading": "Slanje...",
+    "preview": "Pregled medija",
+    "pending": "Na čekanju",
+    "accepted": "Prihvaćeno",
+    "rejected": "Odbijeno",
+    "remove": "Ukloni sve"
   },
   "footer": {
     "text": "© 2025 Foto & video DESIGNO. Sva prava pridržana.",

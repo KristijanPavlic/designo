@@ -5,6 +5,8 @@ export interface Translations {
     contact: string
     instagram: string
     facebook: string
+    menu: string
+    close: string
   }
   hero: {
     title: string
@@ -16,8 +18,6 @@ export interface Translations {
     christening: string
     birthdays: string
     button: string
-    fullscreen: string
-    delete: string
   }
   about: {
     text1: string
@@ -56,6 +56,24 @@ export interface Translations {
       phone: string
       social: string
     }
+  }
+  dashboard: {
+    title: string
+    morning: string
+    afternoon: string
+    evening: string
+    upload: string
+    select: string
+    choose: string
+    notchosen: string
+    category: string
+    button: string
+    uploading: string
+    preview: string
+    pending: string
+    accepted: string
+    rejected: string
+    remove: string
   }
   footer: {
     text: string

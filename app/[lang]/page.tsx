@@ -13,6 +13,7 @@ export default async function Home({
   return (
     <main>
       <h1>{translations.hero.title}</h1>
+      <p>{translations.hero.cta}</p>
       <LanguageSwitcher currentLang={lang} />
     </main>
   )

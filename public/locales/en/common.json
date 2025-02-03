@@ -4,7 +4,9 @@
     "about": "About",
     "contact": "Contact",
     "instagram": "Instagram",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "menu": "Menu",
+    "close": "Close"
   },
   "hero": {
     "title": "Timeless Memories, Perfectly Framed",
@@ -15,9 +17,7 @@
     "familykids": "Family & kids",
     "christening": "Christening",
     "birthdays": "Birthdays",
-    "button": "View more",
-    "fullscreen": "View in fullscreen",
-    "delete": "Delete image"
+    "button": "View more"
   },
   "about": {
     "text1": "lorem ipsum",
@@ -56,6 +56,24 @@
       "phone": "+385 (0) 98 921 0905",
       "social": "Social networks"
     }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "morning": "Good Morning",
+    "afternoon": "Good Afternoon",
+    "evening": "Good Evening",
+    "upload": "Upload Media",
+    "select": "Select Images / Videos",
+    "choose": "Choose Files",
+    "notchosen": "No files chosen",
+    "category": "Select Category",
+    "button": "Upload Media",
+    "uploading": "Uploading...",
+    "preview": "Media Preview",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "remove": "Remove All"
   },
   "footer": {
     "text": "© 2025 Foto & video DESIGNO. All Rights Reserved.",
