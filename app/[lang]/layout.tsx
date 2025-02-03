@@ -1,6 +1,13 @@
 import type { Metadata } from 'next'
 import { Alexandria } from 'next/font/google'
+
 import './globals.css'
+
+import { getTranslations } from '@/lib/getTranslations'
+
+export async function generateStaticParams() {
+  return [{ lang: 'hr' }, { lang: 'en' }]
+}
 
 const alexandria = Alexandria({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -17,14 +24,25 @@ export const metadata: Metadata = {
   description: 'FOTO&VIDEO DESIGNO',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode
+  params: Promise<{ lang: string }>
 }>) {
+  const { lang } = await params
+  await getTranslations(lang)
+
   return (
-    <html lang="en">
-      <body className={`${alexandria.className} antialiased`}>{children}</body>
+    <html lang={lang} suppressHydrationWarning>
+      <head />
+      <body
+        className={`${alexandria.className} antialiased`}
+        suppressHydrationWarning
+      >
+        <div>{children}</div>
+      </body>
     </html>
   )
 }
