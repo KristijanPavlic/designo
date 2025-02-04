@@ -1,5 +1,4 @@
 import { getTranslations } from '@/lib/getTranslations'
-import LanguageSwitcher from './LanguageSwitcher'
 import type { Translations } from '../../types/translations'
 
 export default async function Home({
@@ -14,7 +13,6 @@ export default async function Home({
     <main>
       <h1>{translations.hero.title}</h1>
       <p>{translations.hero.cta}</p>
-      <LanguageSwitcher currentLang={lang} />
     </main>
   )
 }

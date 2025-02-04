@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
-import { Button } from '../../components/button'
+import { Button } from './ui/button'
 
 export default function LanguageSwitcher({
   currentLang,

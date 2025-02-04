@@ -5,6 +5,8 @@ import './globals.css'
 
 import { getTranslations } from '@/lib/getTranslations'
 
+import { Navigation } from '@/components/Navigation'
+
 export async function generateStaticParams() {
   return [{ lang: 'hr' }, { lang: 'en' }]
 }
@@ -32,7 +34,7 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>
 }>) {
   const { lang } = await params
-  await getTranslations(lang)
+  const translations = await getTranslations(lang)
 
   return (
     <html lang={lang} suppressHydrationWarning>
@@ -41,7 +43,8 @@ export default async function RootLayout({
         className={`${alexandria.className} antialiased`}
         suppressHydrationWarning
       >
-        <div>{children}</div>
+        <Navigation lang={lang} translations={translations} />
+        <div className="pt-16 lg:pt-20">{children}</div>
       </body>
     </html>
   )
