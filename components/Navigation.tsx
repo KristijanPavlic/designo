@@ -1,9 +1,15 @@
 'use client'
 
 import * as React from 'react'
+import { useEffect } from 'react'
 import { Frank_Ruhl_Libre } from 'next/font/google'
 import Link from 'next/link'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import type { Translations } from '@/types/translations'
 
 const frankRuhlLibre = Frank_Ruhl_Libre({
@@ -24,6 +30,18 @@ interface NavigationProps {
 export function Navigation({ lang, translations }: NavigationProps) {
   const [isOpen, setIsOpen] = React.useState(false)
 
+  // Close menu on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && isOpen) {
+        setIsOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isOpen])
+
   const routes = [
     { href: `#`, label: translations.navigation.gallery },
     { href: `#`, label: translations.navigation.about },
@@ -43,15 +61,15 @@ export function Navigation({ lang, translations }: NavigationProps) {
 
   return (
     <header className="sticky left-0 right-0 top-0 z-50">
-      <nav className="bg-black/70 backdrop-blur-md">
+      <nav className="bg-[var(--light-black)] py-3 backdrop-blur-lg">
         <div className="container mx-auto flex justify-between px-4">
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:flex-1 lg:items-center lg:gap-8">
-            {routes.map((route) => (
+            {routes.map((route, index) => (
               <Link
-                key={route.href}
+                key={route.href + index + 'desktop 1'}
                 href={route.href}
-                className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] antialiased transition-colors hover:text-white`}
+                className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] antialiased transition-colors hover:text-[var(--white)] lg:text-2xl`}
               >
                 {route.label}
               </Link>
@@ -62,7 +80,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
           <div className="flex items-center lg:flex-1 lg:justify-center">
             <Link
               href={`/${lang}`}
-              className="text-lg font-medium tracking-[5.7] text-white lg:text-2xl lg:tracking-[7.7]"
+              className="text-lg font-medium tracking-[5.7px] text-[var(--white)] lg:text-2xl lg:tracking-[7.7px]"
             >
               DESIGNO
               <span className="flex text-lg font-extralight tracking-tight lg:text-2xl">
@@ -73,11 +91,11 @@ export function Navigation({ lang, translations }: NavigationProps) {
 
           {/* Desktop Social Links & Language */}
           <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-8">
-            {socialLinks.map((link) => (
+            {socialLinks.map((link, index) => (
               <Link
-                key={link.href}
+                key={link.href + index + 'desktop 2'}
                 href={link.href}
-                className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] antialiased transition-colors hover:text-white`}
+                className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] antialiased transition-colors hover:text-[var(--white)] lg:text-2xl`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -92,7 +110,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
                   `/${newLang}`
                 )
               }}
-              className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] transition-colors hover:text-white`}
+              className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-2xl`}
             >
               {lang === 'hr' ? 'EN' : 'HR'}
             </button>
@@ -100,6 +118,51 @@ export function Navigation({ lang, translations }: NavigationProps) {
 
           {/* Mobile Menu */}
           <div className="flex items-center gap-4 lg:hidden">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger className="text-[var(--stone-gray)] hover:text-[var(--white)]">
+                <span
+                  className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-2xl`}
+                >
+                  {isOpen
+                    ? translations.navigation.close
+                    : translations.navigation.menu}
+                </span>
+              </SheetTrigger>
+              <SheetContent
+                side="top"
+                className="mt-20 border-none bg-[var(--light-black)] backdrop-blur-lg transition-transform duration-300"
+              >
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                {/* Navigation & Social Links */}
+                <div className="border-t border-[var(--gray)]"></div>
+                <div className="container mx-auto mt-4 flex flex-row flex-wrap justify-evenly px-4 pb-6">
+                  {routes.map((route, index) => (
+                    <Link
+                      key={route.href + index + 'mobile 1'}
+                      href={route.href}
+                      className={`${frankRuhlLibre.className} py-2 text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)]`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {route.label}
+                    </Link>
+                  ))}
+                </div>
+                <div className="container mx-auto mt-4 flex flex-row flex-wrap justify-evenly px-4 pb-6">
+                  {socialLinks.map((link, index) => (
+                    <Link
+                      key={link.href + index + 'mobile 2'}
+                      href={link.href}
+                      className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)]`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
             <button
               onClick={() => {
                 const newLang = lang === 'hr' ? 'en' : 'hr'
@@ -108,58 +171,10 @@ export function Navigation({ lang, translations }: NavigationProps) {
                   `/${newLang}`
                 )
               }}
-              className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] transition-colors hover:text-white`}
+              className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-2xl`}
             >
               {lang === 'hr' ? 'EN' : 'HR'}
             </button>
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger className="text-[#bbbbbb] hover:text-white">
-                {isOpen ? (
-                  <span
-                    className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] transition-colors hover:text-white`}
-                  >
-                    {translations.navigation.close}
-                  </span>
-                ) : (
-                  <span
-                    className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] transition-colors hover:text-white`}
-                  >
-                    {translations.navigation.menu}
-                  </span>
-                )}
-              </SheetTrigger>
-              <SheetContent
-                side="top"
-                className="h-screen w-full border-none bg-black/90 backdrop-blur-md"
-              >
-                <div className="flex h-full flex-col items-center justify-center gap-8">
-                  {routes.map((route) => (
-                    <Link
-                      key={route.href}
-                      href={route.href}
-                      className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] antialiased transition-colors hover:text-white`}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {route.label}
-                    </Link>
-                  ))}
-                  <div className="mt-4 flex gap-6">
-                    {socialLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className={`${frankRuhlLibre.className} text-xl font-light text-[#bbbbbb] antialiased transition-colors hover:text-white`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
         </div>
       </nav>

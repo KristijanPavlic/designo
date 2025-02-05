@@ -5,13 +5,13 @@
 @layer base {
   :root {
     --white: #FFFFFF;
-    --light-gray: #BBBBBB;
+    --stone-gray: #BBBBBB;
     --gray: #8E8E8E;
     --yellow: #FBBC04;
     --dark-gray: #202020;
     --black: #000000;
     --light-gray: #8e8e8e11;
     --ultralight-gray: #8e8e8e08;
-    --light-black: #00000072;
+    --light-black: #000000cd;
   }
 }

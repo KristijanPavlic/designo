@@ -18,9 +18,9 @@ function getLocale(request: NextRequest): string {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
-  // Completely ignore favicon.ico requests
-  if (pathname === '/favicon.ico') {
-    return
+  // Ignore favicon.ico requests
+  if (pathname.includes('favicon.ico')) {
+    return NextResponse.next()
   }
 
   // Check if the pathname already has a valid locale
