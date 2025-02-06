@@ -1,3 +1,4 @@
+// sheet.tsx
 'use client'
 
 import * as React from 'react'
@@ -7,24 +8,22 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const Sheet = SheetPrimitive.Root
-
 const SheetTrigger = SheetPrimitive.Trigger
-
 const SheetClose = SheetPrimitive.Close
-
 const SheetPortal = SheetPrimitive.Portal
 
 const sheetVariants = cva(
-  'fixed z-50 bg-transparent transition-all duration-300 ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out',
+  'fixed z-50 bg-transparent transition-all duration-200 ease-in-out',
   {
     variants: {
       side: {
-        top: 'inset-x-0 top-0 -translate-y-full data-[state=open]:translate-y-0',
+        // For a dropdown from the top:
+        top: 'inset-x-0 top-0 transform -translate-y-full opacity-0 data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp',
         bottom:
-          'inset-x-0 bottom-0 translate-y-full data-[state=open]:translate-y-0',
-        left: 'inset-y-0 left-0 -translate-x-full data-[state=open]:translate-x-0',
+          'inset-x-0 bottom-0 transform translate-y-full opacity-0 data-[state=open]:animate-slideUp data-[state=closed]:animate-slideDown',
+        left: 'inset-y-0 left-0 transform -translate-x-full opacity-0 data-[state=open]:translate-x-0 data-[state=closed]:-translate-x-full',
         right:
-          'inset-y-0 right-0 translate-x-full data-[state=open]:translate-x-0',
+          'inset-y-0 right-0 transform translate-x-full opacity-0 data-[state=open]:translate-x-0 data-[state=closed]:translate-x-full',
       },
     },
     defaultVariants: {

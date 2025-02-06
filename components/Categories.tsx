@@ -1,9 +1,7 @@
 import { getTranslations } from '@/lib/getTranslations'
+import type { Translations } from '../types/translations'
 
 import { Frank_Ruhl_Libre } from 'next/font/google'
-import { Translations } from '@/types/translations'
-
-import ScrollCta from '@/components/ScrollCta'
 
 const frankRuhlLibre = Frank_Ruhl_Libre({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
@@ -15,7 +13,7 @@ const frankRuhlLibre = Frank_Ruhl_Libre({
   adjustFontFallback: true,
 })
 
-export default async function Hero({
+export default async function Categories({
   params,
 }: {
   params: Promise<{ lang: string }>
@@ -24,13 +22,11 @@ export default async function Hero({
   const translations: Translations = await getTranslations(lang)
 
   return (
-    <div className="container relative mx-auto min-h-[70svh] px-4 text-center lg:text-left">
-      <h1
-        className={`${frankRuhlLibre.className} mt-20 text-[2.5rem] text-[var(--white)] md:text-[4rem] lg:text-[5rem] xl:text-[6rem]`}
-      >
-        {translations.hero.title1} <br /> {translations.hero.title2}
-      </h1>
-      <ScrollCta text={translations.hero.cta} />
+    <div
+      id="categories-section"
+      className={`${frankRuhlLibre.className} container mx-auto flex min-h-svh items-center justify-center px-4`}
+    >
+      <h1>{translations.categories.weddings}</h1>
     </div>
   )
 }

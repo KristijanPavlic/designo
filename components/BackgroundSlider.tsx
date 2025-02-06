@@ -75,11 +75,9 @@ export default function BackgroundSlider({ images }: BackgroundSliderProps) {
   }
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden">
+    <div className="absolute inset-0 -z-10 max-h-svh overflow-x-hidden">
       {/* Current image remains static in the background */}
       <div className="absolute inset-0">
-        {/* Optional dark overlay */}
-        <div className="absolute inset-0 bg-black/70" />
         <Image
           src={images[currentIndex].src || '/placeholder.svg'}
           alt={images[currentIndex].alt}
@@ -96,7 +94,6 @@ export default function BackgroundSlider({ images }: BackgroundSliderProps) {
             animateNext ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="absolute inset-0 bg-black/70" />
           <Image
             src={images[nextIndex].src || '/placeholder.svg'}
             alt={images[nextIndex].alt}

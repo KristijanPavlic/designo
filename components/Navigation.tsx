@@ -118,7 +118,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
 
           {/* Mobile Menu */}
           <div className="flex items-center gap-4 lg:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
               <SheetTrigger className="text-[var(--stone-gray)] hover:text-[var(--white)]">
                 <span
                   className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-2xl`}

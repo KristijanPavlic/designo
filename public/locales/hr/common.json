@@ -9,7 +9,8 @@
     "close": "Zatvori"
   },
   "hero": {
-    "title": "Bezvremenske uspomene, savršeno uokvirene",
+    "title1": "Bezvremenske uspomene,",
+    "title2": "savršeno uokvirene",
     "cta": "Istraži"
   },
   "categories": {

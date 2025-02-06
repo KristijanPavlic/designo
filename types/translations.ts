@@ -9,7 +9,8 @@ export interface Translations {
     close: string
   }
   hero: {
-    title: string
+    title1: string
+    title2: string
     cta: string
   }
   categories: {
