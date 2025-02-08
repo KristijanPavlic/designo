@@ -1,8 +1,6 @@
 import { getTranslations } from '@/lib/getTranslations'
-
 import { Frank_Ruhl_Libre } from 'next/font/google'
 import { Translations } from '@/types/translations'
-
 import ScrollCta from '@/components/ScrollCta'
 
 const frankRuhlLibre = Frank_Ruhl_Libre({
@@ -24,9 +22,10 @@ export default async function Hero({
   const translations: Translations = await getTranslations(lang)
 
   return (
-    <div className="container relative mx-auto min-h-[70svh] px-4 text-center lg:text-left">
+    // Set a fixed height (100svh) and hide overflow so that absolutely positioned elements don't expand the container.
+    <div className="container relative mx-auto h-[92svh] overflow-hidden px-4 text-center lg:text-left">
       <h1
-        className={`${frankRuhlLibre.className} mt-20 text-[2.5rem] text-[var(--white)] md:text-[4rem] lg:text-[5rem] xl:text-[6rem]`}
+        className={`${frankRuhlLibre.className} animate-fadeInUp mb-10 pt-20 text-[2.5rem] text-[var(--white)] md:text-[4rem] lg:text-[5rem] xl:text-[6rem]`}
       >
         {translations.hero.title1} <br /> {translations.hero.title2}
       </h1>

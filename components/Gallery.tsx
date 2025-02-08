@@ -1,6 +1,5 @@
 import { getTranslations } from '@/lib/getTranslations'
 import type { Translations } from '../types/translations'
-
 import { Frank_Ruhl_Libre } from 'next/font/google'
 
 const frankRuhlLibre = Frank_Ruhl_Libre({
@@ -13,7 +12,7 @@ const frankRuhlLibre = Frank_Ruhl_Libre({
   adjustFontFallback: true,
 })
 
-export default async function Categories({
+export default async function Gallery({
   params,
 }: {
   params: Promise<{ lang: string }>
@@ -22,11 +21,11 @@ export default async function Categories({
   const translations: Translations = await getTranslations(lang)
 
   return (
-    <div
-      id="categories-section"
-      className={`${frankRuhlLibre.className} container mx-auto flex min-h-svh items-center justify-center px-4`}
+    <section
+      id="gallery-section"
+      className={`${frankRuhlLibre.className} flex min-h-screen border-2 border-red-600 px-4 pb-16`}
     >
       <h1>{translations.categories.weddings}</h1>
-    </div>
+    </section>
   )
 }

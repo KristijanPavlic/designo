@@ -30,7 +30,7 @@ const backgroundImages: BackgroundImage[] = [
 
 import Hero from '@/components/Hero'
 
-import Categories from '@/components/Categories'
+import Gallery from '@/components/Gallery'
 
 export default async function Home({
   params,
@@ -45,7 +45,7 @@ export default async function Home({
       <BackgroundSlider images={backgroundImages} />
       <Navigation lang={lang} translations={translations} />
       <Hero params={params} />
-      <Categories params={params} />
+      <Gallery params={params} />
     </main>
   )
 }

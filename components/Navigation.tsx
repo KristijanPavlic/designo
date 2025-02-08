@@ -29,6 +29,13 @@ interface NavigationProps {
 
 export function Navigation({ lang, translations }: NavigationProps) {
   const [isOpen, setIsOpen] = React.useState(false)
+  // State for triggering the slide-in animation on page load
+  const [animateNav, setAnimateNav] = React.useState(false)
+
+  // Trigger the navigation slide-in after the component mounts
+  useEffect(() => {
+    setAnimateNav(true)
+  }, [])
 
   // Close menu on window resize
   useEffect(() => {
@@ -60,7 +67,12 @@ export function Navigation({ lang, translations }: NavigationProps) {
   ]
 
   return (
-    <header className="sticky left-0 right-0 top-0 z-50">
+    // Header is set to z-50 so it always stays on top
+    <header
+      className={`sticky left-0 right-0 top-0 z-50 transform transition-transform duration-700 ${
+        animateNav ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       <nav className="bg-[var(--light-black)] py-3 backdrop-blur-lg">
         <div className="container mx-auto flex justify-between px-4">
           {/* Desktop Navigation */}
@@ -130,7 +142,8 @@ export function Navigation({ lang, translations }: NavigationProps) {
               </SheetTrigger>
               <SheetContent
                 side="top"
-                className="mt-20 border-none bg-[var(--light-black)] backdrop-blur-lg transition-transform duration-300"
+                // Adding a lower z-index (z-40) to ensure this content is behind the main nav (z-50)
+                className="z-40 mt-20 border-none bg-[var(--light-black)] backdrop-blur-lg transition-transform duration-300"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 {/* Navigation & Social Links */}
