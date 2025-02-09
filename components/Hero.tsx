@@ -53,10 +53,10 @@ export default async function Hero({
     <div className="relative min-h-svh">
       <Navigation lang={lang} translations={translations} />
       <BackgroundSlider images={backgroundImages} />
-      <div className="relative overflow-hidden text-center lg:text-left">
+      <div className="relative overflow-hidden pb-10 text-center lg:text-left">
         <div className="animate-fadeInUp container mx-auto min-h-[60svh] px-4">
           <h1
-            className={`${frankRuhlLibre.className} pb-20 pt-20 text-[2.5rem] text-[var(--white)] md:text-[4rem] lg:text-[5rem] xl:text-[6rem]`}
+            className={`${frankRuhlLibre.className} pb-40 pt-20 text-[2.5rem] text-[var(--white)] md:text-[4rem] lg:text-[5rem] xl:text-[6rem]`}
           >
             {translations.hero.title1} <br /> {translations.hero.title2}
           </h1>
