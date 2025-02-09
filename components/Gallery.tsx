@@ -23,7 +23,7 @@ export default async function Gallery({
   return (
     <section
       id="gallery-section"
-      className={`${frankRuhlLibre.className} flex min-h-screen border-2 border-red-600 px-4 pb-16`}
+      className={`${frankRuhlLibre.className} container relative mx-auto h-[2000px] scroll-m-20`}
     >
       <h1>{translations.categories.weddings}</h1>
     </section>

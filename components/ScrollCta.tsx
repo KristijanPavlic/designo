@@ -17,7 +17,7 @@ export default function ScrollCTA({ text }: ScrollCTAProps) {
   return (
     <span
       onClick={handleScroll}
-      className="animate-fadeInUp group absolute bottom-6 left-0 right-0 mx-auto mb-10 w-fit cursor-pointer text-center text-[1.5rem] font-light text-[var(--white)] md:text-[2rem] lg:left-0 lg:right-auto lg:mx-0 lg:w-auto lg:text-left lg:text-[2.5rem] xl:text-[3rem]"
+      className="group absolute bottom-0 left-0 right-0 mx-auto w-fit cursor-pointer text-center text-[1.5rem] font-light text-[var(--white)] md:text-[2rem] lg:left-4 lg:right-auto lg:mx-0 lg:w-auto lg:text-left lg:text-[2.5rem] xl:text-[3rem]"
     >
       {text}
       {/* Underline element */}
