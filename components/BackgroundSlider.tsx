@@ -75,7 +75,7 @@ export default function BackgroundSlider({ images }: BackgroundSliderProps) {
   }
 
   return (
-    <div className="absolute inset-0 max-h-svh min-h-[100%] overflow-x-hidden">
+    <div className="absolute inset-0 top-[-5rem] max-h-svh min-h-full overflow-x-hidden">
       {/* Current image remains static in the background */}
       <div className="absolute inset-0">
         <Image
