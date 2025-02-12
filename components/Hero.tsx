@@ -6,10 +6,10 @@ import BackgroundSlider from './BackgroundSlider'
 
 import type { BackgroundImage } from '@/types/images'
 
-import image1 from '../public/images/image.jpg'
-import image2 from '../public/images/image2.jpg'
-import image3 from '../public/images/image3.jpg'
-import image4 from '../public/images/image4.jpg'
+import image1 from '../public/images/slider1.jpg'
+import image2 from '../public/images/slider2.jpg'
+import image3 from '../public/images/slider3.jpg'
+import image4 from '../public/images/slider4.jpg'
 import { Navigation } from './Navigation'
 
 const backgroundImages: BackgroundImage[] = [
