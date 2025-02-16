@@ -9,7 +9,7 @@ import {
   SheetContent,
   SheetTrigger,
   SheetTitle,
-} from '@/components/ui/Sheet'
+} from '@/components/ui/sheet'
 import type { Translations } from '@/types/translations'
 
 const frankRuhlLibre = Frank_Ruhl_Libre({
