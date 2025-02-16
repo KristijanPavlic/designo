@@ -1,6 +1,6 @@
 'use client'
 
-import { SignInButton, UserButton } from '@clerk/nextjs'
+import { UserButton } from '@clerk/nextjs'
 import { useUserData } from '@/hooks/useUserData'
 
 export default function ClientUserInfo() {
@@ -13,15 +13,14 @@ export default function ClientUserInfo() {
   return (
     <div>
       {isSignedIn && user ? (
-        <>
-          <p>Welcome, {user.firstName || 'User'}!</p>
+        <div className="flex items-center gap-2">
+          <p className="text-lg text-[var(--dark-gray)] md:text-xl xl:text-3xl">
+            {user.firstName || 'User'}
+          </p>
           <UserButton />
-        </>
-      ) : (
-        <div>
-          <p>Please sign in.</p>
-          <SignInButton />
         </div>
+      ) : (
+        <div></div>
       )}
     </div>
   )

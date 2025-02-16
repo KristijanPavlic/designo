@@ -8,10 +8,8 @@ export default async function SignInPage({
   const { lang } = await params
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--white)]">
-      <div className="w-full max-w-md">
-        <SignIn redirectUrl={`/${lang}/dashboard`} />
-      </div>
+    <div className="my-5 flex min-h-screen items-center justify-center bg-[var(--white)]">
+      <SignIn redirectUrl={`/${lang}/dashboard`} />
     </div>
   )
 }
