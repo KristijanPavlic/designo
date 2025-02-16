@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
-import { Button } from './ui/Button'
 
 export default function LanguageSwitcher({
   currentLang,
@@ -18,8 +17,8 @@ export default function LanguageSwitcher({
   }
 
   return (
-    <Button onClick={toggleLanguage}>
+    <button onClick={toggleLanguage}>
       {currentLang === 'hr' ? 'EN' : 'HR'}
-    </Button>
+    </button>
   )
 }
