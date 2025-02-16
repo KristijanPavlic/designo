@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Alexandria } from 'next/font/google'
 
+import { ClerkProvider } from '@clerk/nextjs'
+
 import './globals.css'
 
 export async function generateStaticParams() {
@@ -32,14 +34,16 @@ export default async function RootLayout({
   const { lang } = await params
 
   return (
-    <html lang={lang} suppressHydrationWarning>
-      <head />
-      <body
-        className={`${alexandria.className} relative antialiased`}
-        suppressHydrationWarning
-      >
-        <div>{children}</div>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang={lang} suppressHydrationWarning>
+        <head />
+        <body
+          className={`${alexandria.className} relative antialiased`}
+          suppressHydrationWarning
+        >
+          <div>{children}</div>
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
