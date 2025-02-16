@@ -1,33 +1,53 @@
-import { getTranslations } from '@/lib/getTranslations'
-import { Frank_Ruhl_Libre } from 'next/font/google'
 import { Translations } from '@/types/translations'
+import { getTranslations } from '@/lib/getTranslations'
+
+import { Frank_Ruhl_Libre } from 'next/font/google'
+
+import { Navigation } from './Navigation'
+
 import ScrollCta from '@/components/ScrollCta'
+
 import BackgroundSlider from './BackgroundSlider'
 
 import type { BackgroundImage } from '@/types/images'
 
-import image1 from '../public/images/slider1.jpg'
-import image2 from '../public/images/slider2.jpg'
-import image3 from '../public/images/slider3.jpg'
-import image4 from '../public/images/slider4.jpg'
-import { Navigation } from './Navigation'
+import weddingsDesktop from '../public/images/slider_desktop_weddings.jpg'
+import weddingsMobile from '../public/images/slider_mobile_weddings.jpg'
+import familyDesktopMobile from '../public/images/slider_desktop_mobile_family.jpg'
+import christeningDesktopMobile from '../public/images/slider_desktop_mobile_christening.jpg'
+import birthdaysDesktop from '../public/images/slider_desktop_birthdays.jpg'
+import birthdaysMobile from '../public/images/slider_mobile_birthdays.jpg'
 
 const backgroundImages: BackgroundImage[] = [
   {
-    src: image1,
-    alt: 'Background 1',
+    src: weddingsDesktop,
+    alt: 'Weddings Desktop',
+    platform: 'desktop',
   },
   {
-    src: image2,
-    alt: 'Background 2',
+    src: weddingsMobile,
+    alt: 'Weddings Mobile',
+    platform: 'mobile',
   },
   {
-    src: image3,
-    alt: 'Background 3',
+    src: familyDesktopMobile,
+    alt: 'Family Desktop & Mobile',
+    platform: 'both',
   },
   {
-    src: image4,
-    alt: 'Background 4',
+    src: christeningDesktopMobile,
+    alt: 'Christening Desktop & Mobile',
+    platform: 'both',
+  },
+  {
+    src: birthdaysDesktop,
+    alt: 'Birthdays Desktop',
+    platform: 'desktop',
+  },
+  {
+    src: birthdaysMobile,
+    alt: 'Birthdays Mobile',
+    platform: 'mobile',
   },
 ]
 
@@ -57,7 +77,7 @@ export default async function Hero({
         <div className="relative overflow-hidden pb-28 text-center lg:text-left">
           <div className="animate-fadeInUp container mx-auto min-h-[60svh] px-4">
             <h1
-              className={`${frankRuhlLibre.className} pb-40 pt-20 text-[2.5rem] text-[var(--white)] md:text-[4rem] lg:text-[5rem] xl:text-[6rem]`}
+              className={`${frankRuhlLibre.className} pb-40 pt-16 text-[2.5rem] text-[var(--white)] md:text-[4rem] lg:text-[5rem] xl:text-[6rem]`}
             >
               {translations.hero.title1} <br /> {translations.hero.title2}
             </h1>

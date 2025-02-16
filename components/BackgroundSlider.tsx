@@ -1,67 +1,101 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useLayoutEffect, useState, useCallback, useEffect } from 'react'
 import Image from 'next/image'
-import { StaticImageData } from 'next/image'
-
-interface BackgroundImage {
-  src: StaticImageData
-  alt: string
-}
+import type { BackgroundImage } from '@/types/images'
 
 interface BackgroundSliderProps {
   images: BackgroundImage[]
+  /** Breakpoint below which the mobile version is used */
+  mobileBreakpoint?: number
 }
 
-export default function BackgroundSlider({ images }: BackgroundSliderProps) {
-  // The index of the image that is currently shown.
+export default function BackgroundSlider({
+  images,
+  mobileBreakpoint = 768,
+}: BackgroundSliderProps) {
+  // Always call hooks in the same order.
+  const [hasMounted, setHasMounted] = useState(false)
+  const [sliderImages, setSliderImages] = useState<BackgroundImage[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
-  // When a transition is triggered, nextIndex holds the upcoming image's index.
-  // When not transitioning, nextIndex remains null.
   const [nextIndex, setNextIndex] = useState<number | null>(null)
-  // Controls the CSS animation: false = off-screen (translate-x-full),
-  // true = slid in (translate-x-0)
   const [animateNext, setAnimateNext] = useState(false)
 
-  // Trigger a transition to the next image.
-  const triggerTransition = useCallback(() => {
-    if (images.length < 2) return
-
-    const upcomingIndex = (currentIndex + 1) % images.length
-    setNextIndex(upcomingIndex)
-  }, [currentIndex, images])
-
-  // Automatically trigger a transition every 5 seconds.
+  // Set mounted flag after first render.
   useEffect(() => {
-    if (images.length < 2) return
+    setHasMounted(true)
+  }, [])
 
+  // Returns images in the correct order.
+  // On mobile, this returns [weddingsMobile, familyDesktopMobile, christeningDesktopMobile, birthdaysMobile].
+  // On desktop, it returns [weddingsDesktop, familyDesktopMobile, christeningDesktopMobile, birthdaysDesktop].
+  const getOrderedImages = useCallback((): BackgroundImage[] => {
+    if (typeof window !== 'undefined') {
+      const isMobile = window.innerWidth < mobileBreakpoint
+      if (isMobile) {
+        return [images[1], images[2], images[3], images[5]].filter(Boolean)
+      } else {
+        return [images[0], images[2], images[3], images[4]].filter(Boolean)
+      }
+    }
+    // Fallback for SSR (desktop order)
+    return [images[0], images[2], images[3], images[4]].filter(Boolean)
+  }, [images, mobileBreakpoint])
+
+  // Update slider images once mounted.
+  useEffect(() => {
+    if (hasMounted) {
+      const ordered = getOrderedImages()
+      setSliderImages(ordered)
+      setCurrentIndex(0)
+    }
+  }, [hasMounted, getOrderedImages])
+
+  // Handle window resize to recalc ordering.
+  useLayoutEffect(() => {
+    const updateOnResize = () => {
+      const newImages = getOrderedImages()
+      const currentImage = sliderImages[currentIndex]
+      let newIndex = 0
+      if (currentImage) {
+        const idx = newImages.findIndex((img) => img.src === currentImage.src)
+        if (idx !== -1) newIndex = idx
+      }
+      setSliderImages(newImages)
+      setCurrentIndex(newIndex)
+      setNextIndex(null)
+    }
+    window.addEventListener('resize', updateOnResize)
+    return () => window.removeEventListener('resize', updateOnResize)
+  }, [getOrderedImages, sliderImages, currentIndex])
+
+  // --- Slider Transition Logic ---
+  const triggerTransition = useCallback(() => {
+    if (sliderImages.length < 2) return
+    const upcomingIndex = (currentIndex + 1) % sliderImages.length
+    setNextIndex(upcomingIndex)
+  }, [currentIndex, sliderImages])
+
+  useEffect(() => {
+    if (sliderImages.length < 2) return
     const interval = setInterval(() => {
-      // Only trigger a new transition if one isn't already in progress.
       if (nextIndex === null) {
         triggerTransition()
       }
     }, 5000)
-
     return () => clearInterval(interval)
-  }, [images, triggerTransition, nextIndex])
+  }, [sliderImages, triggerTransition, nextIndex])
 
-  // When nextIndex is set, the new image is mounted.
-  // We use a short delay (50ms) to trigger the CSS transition so that
-  // the element initially renders off-screen (translate-x-full)
-  // and then animates in.
   useEffect(() => {
     if (nextIndex !== null) {
       const startTimer = setTimeout(() => {
         setAnimateNext(true)
-      }, 50)
-
-      // Once the slide-in animation (1s) completes, update the current image.
+      }, 100)
       const finishTimer = setTimeout(() => {
         setCurrentIndex(nextIndex)
         setNextIndex(null)
         setAnimateNext(false)
-      }, 1050) // 50ms delay + 1000ms animation
-
+      }, 1050)
       return () => {
         clearTimeout(startTimer)
         clearTimeout(finishTimer)
@@ -69,25 +103,25 @@ export default function BackgroundSlider({ images }: BackgroundSliderProps) {
     }
   }, [nextIndex])
 
-  if (images.length === 0) {
-    console.warn('No images provided to BackgroundSlider')
+  // Until we've mounted and set the slider images, render nothing.
+  if (!hasMounted || sliderImages.length === 0) {
     return null
   }
 
   return (
-    <div className="absolute inset-0 top-[-5rem] max-h-svh min-h-full overflow-x-hidden md:top-[-5.5rem]">
-      {/* Current image remains static in the background */}
+    <div className="absolute inset-0 top-[-5rem] max-h-svh min-h-full overflow-x-hidden lg:top-[-5.5rem]">
+      {/* Current image */}
       <div className="absolute inset-0">
         <Image
-          src={images[currentIndex].src || '/placeholder.svg'}
-          alt={images[currentIndex].alt}
+          src={sliderImages[currentIndex].src || '/placeholder.svg'}
+          alt={sliderImages[currentIndex].alt}
           fill
-          style={{ objectFit: 'cover' }}
+          style={{ objectFit: 'cover', filter: 'brightness(85%)' }}
           priority
         />
       </div>
 
-      {/* Next image slides in from the right on top of the current image */}
+      {/* Next image slides in from the right */}
       {nextIndex !== null && (
         <div
           className={`absolute inset-0 transition-transform duration-1000 ease-in-out ${
@@ -95,10 +129,11 @@ export default function BackgroundSlider({ images }: BackgroundSliderProps) {
           }`}
         >
           <Image
-            src={images[nextIndex].src || '/placeholder.svg'}
-            alt={images[nextIndex].alt}
+            src={sliderImages[nextIndex].src || '/placeholder.svg'}
+            alt={sliderImages[nextIndex].alt}
             fill
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', filter: 'brightness(85%)' }}
+            priority
           />
         </div>
       )}
