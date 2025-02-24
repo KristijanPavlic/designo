@@ -44,13 +44,25 @@
     }
   },
   "contact": {
-    "title": "Get in Touch with DESIGNO",
+    "title": "Get in Touch with",
+    "company": "DESIGNO",
     "text": "Whether you're looking for stunning photography or breathtaking videos, we're here to help you make it happen.",
+    "phone": "Phone",
+    "socialNetworks": "Social networks",
     "form": {
       "name": "Name",
+      "nameError": "Name must be at least 2 characters",
+      "namePlaceholder": "John Doe",
       "email": "Email",
+      "emailError": "Please enter a valid email address",
+      "emailPlaceholder": "john.doe@mail.com",
       "message": "Message",
-      "button": "Send Message"
+      "messageError": "Message must be at least 10 characters",
+      "messagePlaceholder": "Your message here",
+      "sendButton": "Send Message",
+      "sendingButton": "Sending...",
+      "success": "Message sent successfully",
+      "error": "An error occurred. Please try again."
     },
     "info": {
       "email": "fotovideo.designo@gmail.com",

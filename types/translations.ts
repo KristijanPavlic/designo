@@ -45,12 +45,24 @@ export interface Translations {
   }
   contact: {
     title: string
+    company: string
     text: string
+    phone: string
+    socialNetworks: string
     form: {
       name: string
+      nameError: string
+      namePlaceholder: string
       email: string
+      emailError: string
+      emailPlaceholder: string
       message: string
-      button: string
+      messageError: string
+      messagePlaceholder: string
+      sendButton: string
+      sendingButton: string
+      success: string
+      error: string
     }
     info: {
       email: string

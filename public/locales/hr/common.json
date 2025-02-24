@@ -44,13 +44,25 @@
     }
   },
   "contact": {
-    "title": "Kontaktirajte DESIGNO",
+    "title": "Kontaktirajte",
+    "company": "DESIGNO",
     "text": "Bilo da tražite zadivljujuće fotografije ili očaravajuće videozapise, tu smo da vam pomognemo ostvariti to.",
+    "phone": "Mobitel",
+    "socialNetworks": "Društvene mreže",
     "form": {
       "name": "Ime",
-      "email": "E-mail",
+      "namePlaceholder": "Ivan Horvat",
+      "nameError": "Ime mora imati najmanje 2 znaka",
+      "email": "Email",
+      "emailError": "Unesite valjanu email adresu",
+      "emailPlaceholder": "ivan.horvat@mail.com",
       "message": "Poruka",
-      "button": "Pošalji poruku"
+      "messageError": "Poruka mora imati najmanje 10 znakova",
+      "messagePlaceholder": "Vaša poruka",
+      "sendButton": "Pošalji poruku",
+      "sendingButton": "Slanje...",
+      "success": "Poruka je uspješno poslana",
+      "error": "Došlo je do pogreške. Molimo pokušajte ponovno."
     },
     "info": {
       "email": "fotovideo.designo@gmail.com",
