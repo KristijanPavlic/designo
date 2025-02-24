@@ -4,6 +4,8 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { Frank_Ruhl_Libre } from 'next/font/google'
 import Link from 'next/link'
+import ScrollBtn from '@/components/ScrollBtn'
+
 import {
   Sheet,
   SheetContent,
@@ -50,9 +52,9 @@ export function Navigation({ lang, translations }: NavigationProps) {
   }, [isOpen])
 
   const routes = [
-    { href: `#`, label: translations.navigation.gallery },
-    { href: `#`, label: translations.navigation.about },
-    { href: `#`, label: translations.navigation.contact },
+    { section: `gallery-section`, label: translations.navigation.gallery },
+    { section: `about-section`, label: translations.navigation.about },
+    { section: `contact-section`, label: translations.navigation.contact },
   ]
 
   const socialLinks = [
@@ -78,13 +80,14 @@ export function Navigation({ lang, translations }: NavigationProps) {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:flex-1 lg:items-center lg:gap-8">
             {routes.map((route, index) => (
-              <Link
-                key={route.href + index + 'desktop 1'}
-                href={route.href}
-                className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] antialiased transition-colors hover:text-[var(--white)] lg:text-2xl`}
-              >
-                {route.label}
-              </Link>
+              <ScrollBtn
+                key={route.section + index + 'desktop 1'}
+                id={route.section + index + 'desktop 1'}
+                scrollTo={route.section}
+                className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] antialiased transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-[var(--white)] lg:text-2xl`}
+                text={route.label}
+                underline={false}
+              />
             ))}
           </div>
 
@@ -150,14 +153,15 @@ export function Navigation({ lang, translations }: NavigationProps) {
                 <div className="border-t border-[var(--gray)]"></div>
                 <div className="container mx-auto mt-4 flex flex-row flex-wrap justify-evenly px-4 pb-6">
                   {routes.map((route, index) => (
-                    <Link
-                      key={route.href + index + 'mobile 1'}
-                      href={route.href}
-                      className={`${frankRuhlLibre.className} py-2 text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)]`}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {route.label}
-                    </Link>
+                    <ScrollBtn
+                      key={route.section + index + 'mobile 1'}
+                      id={route.section + index + 'mobile 1'}
+                      scrollTo={route.section}
+                      className={`${frankRuhlLibre.className} py-2 text-xl font-light text-[var(--stone-gray)] transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-[var(--white)]`}
+                      text={route.label}
+                      underline={false}
+                      onclick={() => setIsOpen(false)}
+                    />
                   ))}
                 </div>
                 <div className="container mx-auto mt-4 flex flex-row flex-wrap justify-evenly px-4 pb-6">

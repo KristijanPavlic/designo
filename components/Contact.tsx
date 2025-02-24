@@ -31,14 +31,14 @@ export default async function Contact({
     },
     {
       text: 'Facebook',
-      url: 'https://www.facebook.com/krumenjak.photography',
+      url: 'https://www.facebook.com/FotoDesigno/',
     },
   ]
 
   return (
     <section
-      id="gallery-section"
-      className={`container relative mx-auto pb-20 scroll-m-20 px-4`}
+      id="contact-section"
+      className={`container relative mx-auto scroll-m-20 px-4 pb-20`}
     >
       <BackgroundLines />
       <div className="flex flex-col items-start justify-between space-y-12 lg:flex-row lg:items-center lg:space-y-0">

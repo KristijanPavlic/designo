@@ -5,7 +5,7 @@ import { Frank_Ruhl_Libre } from 'next/font/google'
 
 import { Navigation } from './Navigation'
 
-import ScrollCta from '@/components/ScrollCta'
+import ScrollBtn from '@/components/ScrollBtn'
 
 import BackgroundSlider from './BackgroundSlider'
 
@@ -81,7 +81,12 @@ export default async function Hero({
             >
               {translations.hero.title1} <br /> {translations.hero.title2}
             </h1>
-            <ScrollCta text={translations.hero.cta} />
+            <ScrollBtn
+              text={translations.hero.cta}
+              className="group absolute bottom-0 left-0 right-0 mx-auto w-fit cursor-pointer text-center text-[1.5rem] font-light text-[var(--white)] md:text-[2rem] lg:left-4 lg:right-auto lg:mx-0 lg:w-auto lg:text-left lg:text-[2.5rem] xl:text-[3rem]"
+              scrollTo="gallery-section"
+              underline={true}
+            />
           </div>
         </div>
       </div>

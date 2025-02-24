@@ -69,7 +69,7 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
           className="h-12 w-full rounded-md border border-[var(--stone-gray)] px-4 font-normal"
         />
         {errors.name && (
-          <p className="mt-1 text-sm text-red-500">
+          <p className="mt-1 text-sm text-[var(--red)]">
             {getErrorMessage(translations.nameError)}
           </p>
         )}
@@ -85,7 +85,7 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
           className="h-12 w-full rounded-md border border-[var(--stone-gray)] px-4 font-normal"
         />
         {errors.email && (
-          <p className="mt-1 text-sm text-red-500">
+          <p className="mt-1 text-sm text-[var(--red)]">
             {getErrorMessage(translations.emailError)}
           </p>
         )}
@@ -100,7 +100,7 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
           className="min-h-[120px] w-full resize-none rounded-md border border-[var(--stone-gray)] p-4 font-normal"
         />
         {errors.message && (
-          <p className="mt-1 text-sm text-red-500">
+          <p className="mt-1 text-sm text-[var(--red)]">
             {getErrorMessage(translations.messageError)}
           </p>
         )}
@@ -114,10 +114,10 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
           {isSubmitting ? translations.sendingButton : translations.sendButton}
         </button>
         {submitStatus === 'success' && (
-          <p className="mt-6 text-[var(--dark-gray)]">{translations.success}</p>
+          <p className="mt-6 text-[var(--green)]">{translations.success}</p>
         )}
         {submitStatus === 'error' && (
-          <p className="mt-6 text-[var(--dark-gray)]">{translations.error}</p>
+          <p className="mt-6 text-[var(--red)]">{translations.error}</p>
         )}
       </div>
     </form>

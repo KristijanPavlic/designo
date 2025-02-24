@@ -21,7 +21,7 @@ export async function sendEmail(formData: FormData) {
   try {
     await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'fotovideo.designo@gmail.com',
+      to: 'kristijan@kripaweb.com',
       subject: `Nova prijava obrasca od ${data.name}`,
       text: `
         Ime: ${data.name}
