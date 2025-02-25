@@ -2,8 +2,9 @@ import { getTranslations } from '@/lib/getTranslations'
 
 import Hero from '@/components/Hero'
 import Gallery from '@/components/Gallery'
-import Footer from '@/components/Footer'
+import About from '@/components/About'
 import Contact from '@/components/Contact'
+import Footer from '@/components/Footer'
 
 export default async function Home({
   params,
@@ -17,6 +18,7 @@ export default async function Home({
     <main>
       <Hero params={params} />
       <Gallery params={params} />
+      <About params={params} />
       <Contact params={params} />
       <Footer params={params} />
     </main>

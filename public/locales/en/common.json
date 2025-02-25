@@ -21,24 +21,25 @@
     "button": "View more"
   },
   "about": {
-    "text1": "lorem ipsum",
-    "text2": "lorem ipsum",
-    "text3": "lorem ipsum",
+    "text1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "text2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "text3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "info1": "photos & videos",
     "info2": "clients",
     "info3": "years of experience",
+    "readAllReviews": "Read All Reviews",
     "reviews": {
       "review1": {
         "name": "Marina Bartulović",
-        "text": "The best photo booth aunt in the world! ❤️ Full of patience"
+        "text": "The best photo booth aunt in the world! ❤️ Full of patience..."
       },
       "review2": {
         "name": "Lea Badovinac",
-        "text": "I was delighted with the adorable and professional photos"
+        "text": "I was delighted with the adorable and professional photos..."
       },
       "review3": {
-        "name": "Ivana Jurakic",
-        "text": "Kristina is professional, subtly present at all times"
+        "name": "Ivana Jurakić",
+        "text": "Kristina is professional, subtly present at all times, with a smile..."
       },
       "button": "Read Review"
     }

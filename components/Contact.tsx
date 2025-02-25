@@ -38,7 +38,7 @@ export default async function Contact({
   return (
     <section
       id="contact-section"
-      className={`container relative mx-auto scroll-m-20 px-4 pb-20`}
+      className={`container relative mx-auto scroll-m-24 px-4 pb-20`}
     >
       <BackgroundLines />
       <div className="flex flex-col items-start justify-between space-y-12 lg:flex-row lg:items-center lg:space-y-0">

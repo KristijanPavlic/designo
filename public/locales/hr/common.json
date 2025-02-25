@@ -21,24 +21,25 @@
     "button": "Pogledaj sve"
   },
   "about": {
-    "text1": "lorem ipsum",
-    "text2": "lorem ipsum",
-    "text3": "lorem ipsum",
+    "text1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "text2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "text3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "info1": "fotografija i videozapisa",
     "info2": "klijenata",
     "info3": "godina iskustva",
+    "readAllReviews": "Pročitaj sve recenzije",
     "reviews": {
       "review1": {
         "name": "Marina Bartulović",
-        "text": "Najbolja teta fotkalica na svijetu! ❤️ Puna strpljenja"
+        "text": "Najbolja teta fotkalica na svijetu! ❤️ Puna strpljenja..."
       },
       "review2": {
         "name": "Lea Badovinac",
-        "text": "Oduševila sam se preslatkim i profesionalnim fotografijama"
+        "text": "Oduševila sam se preslatkim i profesionalnim fotografijama..."
       },
       "review3": {
         "name": "Ivana Jurakić",
-        "text": "Kristina je profesionalna, suptilno prisutna u svakom trenutku"
+        "text": "Kristina je profesionalna, suptilno prisutna u svakom trenutku, s osmijehom..."
       },
       "button": "Pročitaj recenziju"
     }
