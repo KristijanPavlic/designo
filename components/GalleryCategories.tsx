@@ -1,18 +1,28 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
+import { Translations } from '@/types/translations'
 
 interface GalleryCategory {
   name: string
-  image: string
+  image: string | StaticImageData
 }
 
-interface GalleryProps {
+interface GalleryProps<T> {
   categories: GalleryCategory[]
+  translations: T
 }
 
-export function GalleryCategories({ categories }: GalleryProps) {
+export function GalleryCategories({
+  categories,
+  translations,
+}: GalleryProps<Translations['categories']>) {
+  // Use the translation values directly for category names.
+  const categoriesArray = Object.values(translations).map((value) => ({
+    name: value,
+  }))
+
   const [activeCategory, setActiveCategory] = useState(0)
   const [progress, setProgress] = useState(0)
   const animationFrameRef = useRef<number | null>(null)
@@ -26,7 +36,7 @@ export function GalleryCategories({ categories }: GalleryProps) {
   useEffect(() => {
     setProgress(0)
     lastUpdateTimeRef.current = Date.now()
-  }, [activeCategory]) // Added activeCategory to dependencies
+  }, [activeCategory])
 
   // Handle category rotation and progress animation
   useEffect(() => {
@@ -59,7 +69,7 @@ export function GalleryCategories({ categories }: GalleryProps) {
         cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [categories, isPaused, activeCategory]) // Added activeCategory to dependencies
+  }, [categories, isPaused, activeCategory])
 
   const handleMouseEnter = (index: number) => {
     if (index === activeCategory) {
@@ -80,19 +90,19 @@ export function GalleryCategories({ categories }: GalleryProps) {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="flex flex-col lg:flex-row lg:gap-16">
+      <div className="flex flex-col items-center justify-between lg:flex-row lg:gap-16">
         {/* Categories */}
-        <div className="mb-8 lg:mb-0 lg:w-1/3">
-          <ul className="space-y-8">
-            {categories.map((category, index) => (
+        <div className="mb-8 lg:mb-0 lg:w-2/3">
+          <ul className="space-y-14">
+            {categoriesArray.map((category, index) => (
               <li
                 key={category.name}
-                className="cursor-pointer text-5xl font-light transition-colors duration-300 hover:text-black"
+                className="cursor-pointer text-3xl transition-colors duration-300 hover:text-black lg:text-6xl xl:text-8xl"
                 style={{
                   color: INITIAL_COLOR,
                   backgroundImage: getTextColor(index),
                   WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  WebkitTextFillColor: 'transparent', // here is the problem with invisible text
                   backgroundClip: 'text',
                 }}
                 onMouseEnter={() => handleMouseEnter(index)}
@@ -106,7 +116,7 @@ export function GalleryCategories({ categories }: GalleryProps) {
         </div>
 
         {/* Images */}
-        <div className="relative h-[600px] w-full overflow-hidden lg:w-2/3">
+        <div className="relative h-[700px] w-full overflow-hidden rounded-lg lg:w-[45%] xl:w-[33.33%]">
           {categories.map((category, index) => (
             <div
               key={category.name}
@@ -121,7 +131,6 @@ export function GalleryCategories({ categories }: GalleryProps) {
                 alt={category.name}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 66vw"
                 priority={index === 0}
               />
             </div>
