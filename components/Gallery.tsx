@@ -1,7 +1,8 @@
 import { getTranslations } from '@/lib/getTranslations'
-import type { Translations } from '../types/translations'
+/* import type { Translations } from '../types/translations' */
 import { Frank_Ruhl_Libre } from 'next/font/google'
 import BackgroundLines from './ui/BackgroundLines'
+import { GalleryCategories } from './GalleryCategories'
 
 const frankRuhlLibre = Frank_Ruhl_Libre({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
@@ -19,7 +20,26 @@ export default async function Gallery({
   params: Promise<{ lang: string }>
 }) {
   const { lang } = await params
-  const translations: Translations = await getTranslations(lang)
+  /* const translations: Translations =  */ await getTranslations(lang)
+
+  const categories = [
+    {
+      name: 'Weddings',
+      image: '/placeholder.svg?height=600&width=800',
+    },
+    {
+      name: 'Family & kids',
+      image: '/placeholder.svg?height=600&width=800',
+    },
+    {
+      name: 'Christening',
+      image: '/placeholder.svg?height=600&width=800',
+    },
+    {
+      name: 'Birthdays',
+      image: '/placeholder.svg?height=600&width=800',
+    },
+  ]
 
   return (
     <section
@@ -27,7 +47,7 @@ export default async function Gallery({
       className={`${frankRuhlLibre.className} container relative mx-auto -mt-20 scroll-m-24 px-4`}
     >
       <BackgroundLines />
-      <h1>{translations.categories.weddings}</h1>
+      <GalleryCategories categories={categories} />
     </section>
   )
 }

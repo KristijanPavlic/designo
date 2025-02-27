@@ -1,4 +1,3 @@
-// pages/Dashboard.tsx (or wherever your Dashboard is located)
 import type { Translations } from '@/types/translations'
 import { getTranslations } from '@/lib/getTranslations'
 import ClientUserInfo from '@/components/ClientUserInfo'
