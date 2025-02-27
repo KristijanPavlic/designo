@@ -5,6 +5,7 @@ import { Navigation } from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import BackgroundLines from '@/components/ui/BackgroundLines'
 import Greeting from '@/components/ui/Greeting'
+import MediaUploader from '@/components/MediaUploader'
 
 export default async function Dashboard({
   params,
@@ -22,12 +23,15 @@ export default async function Dashboard({
       <BackgroundLines />
 
       <main className="container relative mx-auto min-h-screen px-4 py-10">
-        <div className="flex items-center gap-2">
+        <div className="mb-8 flex items-center gap-2">
           <h3 className="text-lg text-[var(--dark-gray)] md:text-xl xl:text-3xl">
             <Greeting translations={translations.dashboard} />
           </h3>
           <ClientUserInfo />
         </div>
+
+        {/* Media Upload Section */}
+        <MediaUploader translations={translations.dashboard} />
       </main>
 
       <Footer params={params} />
