@@ -58,10 +58,11 @@ export default async function AboutPage({
   return (
     <section
       id="about-section"
-      className={`container relative mx-auto scroll-m-24 px-4 pb-20 lg:pb-32`}
+      className="container relative mx-auto scroll-m-24 px-4 py-20 lg:pb-32"
     >
       <BackgroundLines />
-      <div className="grid gap-20 md:grid-cols-2">
+      <div className="grid gap-20 lg:grid-cols-2">
+        {/* Text Column */}
         <div className="mt-20 space-y-8">
           {[
             translations.about.text1,
@@ -77,34 +78,58 @@ export default async function AboutPage({
           ))}
         </div>
 
-        {/* Stats on the right */}
-        <div className="relative mt-20 lg:mt-32">
-          {stats.map((stat, index) => (
-            <div
-              key={stat.number}
-              className="absolute flex h-[140px] w-[140px] items-center justify-center rounded-2xl border-2 border-[var(--dark-gray)] bg-[var(--stone-gray)] text-center shadow-md"
-              style={{
-                transform: `
-                  rotate(45deg)
-                  translate(${index === 0 ? '-40%, -50%' : index === 1 ? '70%, -50%' : '70%, 60%'})
-                `,
-              }}
-            >
-              <div className="flex -rotate-45 flex-col items-center">
-                <span className="text-2xl font-bold text-[var(--black)]">
-                  {stat.number}
-                </span>
-                <span className="mt-1 text-base font-light text-[var(--dark-gray)]">
-                  {stat.label}
-                </span>
+        {/* Stats Column */}
+        <div className="relative lg:mt-32">
+          {/* Mobile Stats: show on small screens */}
+          <div className="flex flex-col items-center justify-center md:gap-12 gap-16 space-x-4 md:flex-row lg:hidden">
+            {stats.map((stat) => (
+              <div
+                key={stat.number}
+                className="ml-3 flex h-32 w-32 rotate-45 transform items-center justify-center rounded-2xl border-2 border-[var(--dark-gray)] bg-[var(--stone-gray)] shadow-md sm:h-28 sm:w-28"
+              >
+                <div className="flex -rotate-45 flex-col items-center">
+                  <span className="text-center text-base font-bold text-[var(--black)]">
+                    {stat.number}
+                  </span>
+                  <span className="mt-1 text-center text-[8px] text-base font-light text-[var(--dark-gray)]">
+                    {stat.label}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Desktop Stats: show on large screens */}
+          <div className="relative hidden h-[300px] w-full lg:block">
+            {stats.map((stat, index) => {
+              const desktopTransforms = [
+                'rotate(45deg) translate(-40%, -50%)',
+                'rotate(45deg) translate(70%, -50%)',
+                'rotate(45deg) translate(70%, 60%)',
+              ]
+              return (
+                <div
+                  key={stat.number}
+                  className="absolute left-[8.5rem] top-0 flex h-[140px] w-[140px] items-center justify-center rounded-2xl border-2 border-[var(--dark-gray)] bg-[var(--stone-gray)] shadow-md"
+                  style={{ transform: desktopTransforms[index] }}
+                >
+                  <div className="flex -rotate-45 flex-col items-center">
+                    <span className="text-center text-2xl font-bold text-[var(--black)]">
+                      {stat.number}
+                    </span>
+                    <span className="mt-1 text-center text-base font-light text-[var(--dark-gray)]">
+                      {stat.label}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
 
       {/* Reviews Section */}
-      <div className="mt-40">
+      <div className="mt-20">
         <div className="grid gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-3">
           {reviews.map((review) => (
             <div
@@ -133,7 +158,7 @@ export default async function AboutPage({
               <Link
                 href={review.link}
                 target="_blank"
-                className="rounded-md bg-[#8e8e8e] px-6 py-2 font-light text-white transition-colors hover:bg-[#757575]"
+                className="rounded-md bg-[#8e8e8e] px-6 py-2 font-light text-white transition-colors hover:bg-[var(--dark-gray)]"
               >
                 {translations.about.reviews.button}
               </Link>
