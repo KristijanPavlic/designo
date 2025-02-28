@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import BackgroundLines from '@/components/ui/BackgroundLines'
 import Greeting from '@/components/ui/Greeting'
 import MediaUploader from '@/components/MediaUploader'
+import { Toaster } from 'sonner'
 
 export default async function Dashboard({
   params,
@@ -33,6 +34,7 @@ export default async function Dashboard({
         {/* Media Upload Section */}
         <MediaUploader translations={translations.dashboard} />
       </main>
+      <Toaster />
 
       <Footer params={params} />
     </div>

@@ -12,19 +12,16 @@ cloudinary.config({
 export async function POST(request: Request) {
   try {
     const { folder, file } = await request.json()
-
     if (!folder || !file) {
       return NextResponse.json(
         { error: 'Folder and file are required' },
         { status: 400 }
       )
     }
-
     // Upload to Cloudinary
     const result = await cloudinary.uploader.upload(file, {
       folder: folder,
     })
-
     return NextResponse.json(result)
   } catch (error) {
     console.error('Error uploading file:', error)

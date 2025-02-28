@@ -4,14 +4,12 @@ import { getImagesFromFolder, deleteImage } from '@/lib/cloudinary'
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const folder = searchParams.get('folder')
-
   if (!folder) {
     return NextResponse.json(
       { error: 'Folder parameter is required' },
       { status: 400 }
     )
   }
-
   try {
     const images = await getImagesFromFolder(folder)
     return NextResponse.json(images)
@@ -26,14 +24,12 @@ export async function GET(request: Request) {
 
 export async function DELETE(request: Request) {
   const { publicId } = await request.json()
-
   if (!publicId) {
     return NextResponse.json(
       { error: 'Public ID is required' },
       { status: 400 }
     )
   }
-
   try {
     const result = await deleteImage(publicId)
     return NextResponse.json(result)
