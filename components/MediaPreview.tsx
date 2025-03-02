@@ -79,12 +79,12 @@ export default function MediaPreview({
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">
+    <div className="pt-10 space-y-7">
+      <h2 className="text-3xl font-light">
         {translations.dashboard.mediaPreview}
       </h2>
 
-      <div className="overflow-hidden rounded-lg border">
+      <div className="overflow-hidden rounded-lg border bg-white">
         <div className="flex">
           <button
             className={`flex-1 py-3 ${activeTab === 'pending' ? 'bg-gray-200' : 'bg-gray-100'}`}

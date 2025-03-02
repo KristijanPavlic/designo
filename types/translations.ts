@@ -67,6 +67,8 @@ export interface Translations {
     }
     info: {
       email: string
+      emailCopyToClipboard: string
+      emailCopyError: string
       phone: string
       social: string
     }

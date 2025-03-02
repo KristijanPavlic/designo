@@ -117,8 +117,8 @@ export default function MediaUploader({ translations }: MediaUploaderProps) {
   }, [selectedCategory, mediaFiles, translations])
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-bold">
+    <div className="space-y-6 mt-20">
+      <h1 className="text-3xl font-light">
         {translations.dashboard.uploadMedia}
       </h1>
 

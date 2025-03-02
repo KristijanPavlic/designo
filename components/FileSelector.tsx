@@ -44,10 +44,10 @@ export default function FileSelector({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium">
+      <label className="block text-lg font-light">
         {translations.dashboard.selectImagesVideos}
       </label>
-      <div className="flex items-center overflow-hidden rounded-md border">
+      <div className="flex items-center overflow-hidden rounded-md border bg-white">
         <button
           type="button"
           onClick={handleChooseFilesClick}

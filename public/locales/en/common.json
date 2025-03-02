@@ -67,6 +67,8 @@
     },
     "info": {
       "email": "fotovideo.designo@gmail.com",
+      "emailCopyToClipboard": "Copied to clipboard",
+      "emailCopyError": "Error copying to clipboard",
       "phone": "+385 (0) 98 921 0905",
       "social": "Social networks"
     }

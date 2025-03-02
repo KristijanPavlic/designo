@@ -31,10 +31,10 @@ export default function CategorySelector({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium">
+      <label className="block text-lg font-light">
         {translations.dashboard.selectCategory}
       </label>
-      <div className="relative">
+      <div className="relative bg-white">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
@@ -67,7 +67,7 @@ export default function CategorySelector({
                 key={category}
                 type="button"
                 onClick={() => handleCategorySelect(category)}
-                className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                className="w-full px-4 py-2 text-left font-light transition-all duration-300 ease-in-out hover:bg-gray-100"
               >
                 {translations.dashboard.categories[category]}
               </button>

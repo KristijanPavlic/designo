@@ -4,6 +4,8 @@ import type { Translations } from '../types/translations'
 import BackgroundLines from './ui/BackgroundLines'
 import Link from 'next/link'
 import Image from 'next/image'
+import { CopyToClipboard } from '@/components/CopyToClipboard'
+import { ToastProvider } from '@/components/ToastProvider'
 
 import { ContactForm } from '@/components/ContactForm'
 
@@ -40,6 +42,7 @@ export default async function Contact({
 
   return (
     <>
+      <ToastProvider />
       <section
         id="contact-section"
         className={`container relative mx-auto scroll-m-24 px-4 pb-20`}
@@ -67,12 +70,14 @@ export default async function Contact({
                 <h4 className="mb-1 text-lg font-light text-[var(--gray)]">
                   {translations.contact.form.email}
                 </h4>
-                <Link
-                  href="mailto:fotovideo.designo@gmail.com"
-                  className="text-lg text-[var(--dark-gray)] hover:underline"
+                <CopyToClipboard
+                  text="fotovideo.designo@gmail.com"
+                  translations={translations.contact}
                 >
-                  fotovideo.designo@gmail.com
-                </Link>
+                  <span className="text-lg text-[var(--dark-gray)] hover:underline">
+                    fotovideo.designo@gmail.com
+                  </span>
+                </CopyToClipboard>
               </div>
               <div>
                 <h4 className="mb-1 text-lg font-light text-[var(--gray)]">
@@ -108,7 +113,7 @@ export default async function Contact({
         </div>
       </section>
       <Image
-        src={camera}
+        src={camera || '/placeholder.svg'}
         alt="Camera"
         width={384}
         height={384}
