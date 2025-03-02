@@ -116,7 +116,7 @@ export function GalleryCategories({
         </div>
 
         {/* Images */}
-        <div className="relative h-[700px] w-full overflow-hidden rounded-lg lg:w-[45%] xl:w-[33.33%]">
+        <div className="relative h-[600px] w-full overflow-hidden rounded-lg lg:w-[45%] xl:w-[33.33%]">
           {categories.map((category, index) => (
             <div
               key={category.name}

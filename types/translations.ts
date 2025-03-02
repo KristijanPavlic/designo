@@ -76,18 +76,30 @@ export interface Translations {
     morning: string
     afternoon: string
     evening: string
-    upload: string
-    select: string
-    choose: string
-    notchosen: string
-    category: string
-    button: string
-    uploading: string
-    preview: string
+    uploadMedia: string
+    selectImagesVideos: string
+    chooseFiles: string
+    noFileChosen: string
+    selectCategory: string
+    selectACategory: string
+    mediaPreview: string
     pending: string
     accepted: string
     rejected: string
-    remove: string
+    removeAll: string
+    uploadToCloudinary: string
+    confirmRemoveAll: string
+    yes: string
+    no: string
+    categoryRequired: string
+    uploadSuccess: string
+    uploadError: string
+    categories: {
+      weddings: string
+      family_kids: string
+      christening: string
+      birthdays: string
+    }
   }
   footer: {
     text: string

@@ -71,7 +71,7 @@ export default async function AboutPage({
           ].map((text, i) => (
             <p
               key={i}
-              className="text-xl font-light text-[var(--dark-gray)] lg:text-xl"
+              className="text-lg font-light text-[var(--dark-gray)] md:text-xl"
             >
               {text}
             </p>
@@ -81,7 +81,7 @@ export default async function AboutPage({
         {/* Stats Column */}
         <div className="relative lg:mt-32">
           {/* Mobile Stats: show on small screens */}
-          <div className="flex flex-col items-center justify-center md:gap-12 gap-16 space-x-4 md:flex-row lg:hidden">
+          <div className="flex flex-col items-center justify-center gap-16 space-x-4 md:flex-row md:gap-12 lg:hidden">
             {stats.map((stat) => (
               <div
                 key={stat.number}
@@ -158,7 +158,7 @@ export default async function AboutPage({
               <Link
                 href={review.link}
                 target="_blank"
-                className="rounded-md bg-[#8e8e8e] px-6 py-2 font-light text-white transition-colors hover:bg-[var(--dark-gray)]"
+                className="rounded-md bg-[var(--stone-gray)] px-6 py-2 font-light text-[var(--black)] transition-all duration-300 ease-in-out hover:bg-[var(--dark-gray)] hover:text-[var(--white)]"
               >
                 {translations.about.reviews.button}
               </Link>

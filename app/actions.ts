@@ -25,7 +25,7 @@ export async function sendEmail(formData: FormData) {
       subject: `Nova prijava obrasca od ${data.name}`,
       text: `
         Ime: ${data.name}
-        E-mail: ${data.email}
+        Mail adresa: ${data.email}
         Poruka: ${data.message}
       `,
     })

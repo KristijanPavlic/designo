@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { contactFormSchema, type ContactFormData } from '@/lib/schema'
 import { sendEmail } from '@/app/actions'
+import { toast } from 'sonner'
 import type { Translations } from '@/types/translations'
 
 interface ContactFormProps {
@@ -14,9 +15,6 @@ interface ContactFormProps {
 
 export function ContactForm({ translations, lang }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(
-    null
-  )
 
   const {
     register,
@@ -29,7 +27,6 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
 
   const onSubmit = handleSubmit(async (data) => {
     setIsSubmitting(true)
-    setSubmitStatus(null)
 
     const formData = new FormData()
     Object.entries(data).forEach(([key, value]) => {
@@ -39,14 +36,14 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
     try {
       const result = await sendEmail(formData)
       if (result.error) {
-        setSubmitStatus('error')
+        toast.error(translations.error)
       } else {
-        setSubmitStatus('success')
+        toast.success(translations.success)
         reset()
       }
     } catch (error) {
       console.error('Error sending email:', error)
-      setSubmitStatus('error')
+      toast.error(translations.error)
     } finally {
       setIsSubmitting(false)
     }
@@ -108,17 +105,11 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
       <div>
         <button
           type="submit"
-          className="h-12 w-fit rounded-md bg-[var(--gray)] px-8 text-[var(--white)] transition-all duration-300 ease-in-out hover:bg-[var(--dark-gray)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-12 w-fit rounded-md bg-[var(--stone-gray)] px-8 text-[var(--black)] transition-all duration-300 ease-in-out hover:bg-[var(--dark-gray)] hover:text-[var(--white)] disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
         >
           {isSubmitting ? translations.sendingButton : translations.sendButton}
         </button>
-        {submitStatus === 'success' && (
-          <p className="mt-6 text-[var(--green)]">{translations.success}</p>
-        )}
-        {submitStatus === 'error' && (
-          <p className="mt-6 text-[var(--red)]">{translations.error}</p>
-        )}
       </div>
     </form>
   )

@@ -47,7 +47,7 @@ export default async function Contact({
         <BackgroundLines />
         <div className="flex flex-col items-start justify-between space-y-12 lg:flex-row lg:items-center lg:space-y-0">
           <div className="lg:w-[60.3%]">
-            <h1 className="mb-8 text-4xl font-semibold lg:text-5xl">
+            <h1 className="mb-8 text-4xl font-semibold lg:text-6xl">
               {translations.contact.title}{' '}
               <span className="underline decoration-2">
                 {translations.contact.company}

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import type { Translations } from '@/types/translations'
 import { getTranslations } from '@/lib/getTranslations'
 import ClientUserInfo from '@/components/ClientUserInfo'
@@ -7,6 +9,11 @@ import BackgroundLines from '@/components/ui/BackgroundLines'
 import Greeting from '@/components/ui/Greeting'
 import MediaUploader from '@/components/MediaUploader'
 import { Toaster } from 'sonner'
+
+export const metadata: Metadata = {
+  title: 'FOTO&VIDEO DESIGNO | Dashboard',
+  description: 'Upload and manage media files',
+}
 
 export default async function Dashboard({
   params,
@@ -32,7 +39,7 @@ export default async function Dashboard({
         </div>
 
         {/* Media Upload Section */}
-        <MediaUploader translations={translations.dashboard} />
+        <MediaUploader translations={translations} />
       </main>
       <Toaster />
 
