@@ -1,141 +1,170 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import Image, { StaticImageData } from 'next/image'
-import { Translations } from '@/types/translations'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import Image, { type StaticImageData } from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
+import type { Translations } from '@/types/translations'
 
-interface GalleryCategory {
+import weddingsImg from 'public/images/slider_mobile_weddings.jpg'
+import familyKidsImg from 'public/images/slider_desktop_mobile_family.jpg'
+import christeningImg from 'public/images/slider_desktop_mobile_christening.jpg'
+import birthdaysImg from 'public/images/slider_mobile_birthdays.jpg'
+
+interface GalleryCategoriesProps {
+  translations: Translations
+}
+
+type Category = 'weddings' | 'family_kids' | 'christening' | 'birthdays'
+
+interface CategoryData {
+  id: Category
   name: string
-  image: string | StaticImageData
+  images: StaticImageData[]
 }
 
-interface GalleryProps<T> {
-  categories: GalleryCategory[]
-  translations: T
-}
-
-export function GalleryCategories({
-  categories,
+export default function GalleryCategories({
   translations,
-}: GalleryProps<Translations['categories']>) {
-  // Use the translation values directly for category names.
-  const categoriesArray = Object.values(translations).map((value) => ({
-    name: value,
-  }))
-
-  const [activeCategory, setActiveCategory] = useState(0)
-  const [progress, setProgress] = useState(0)
+}: GalleryCategoriesProps) {
+  const [activeCategory, setActiveCategory] = useState<Category>('weddings')
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const animationFrameRef = useRef<number | null>(null)
-  const lastUpdateTimeRef = useRef<number>(Date.now())
-  const [isPaused, setIsPaused] = useState(false)
 
-  const INITIAL_COLOR = '#8e8e8e'
-  const ACTIVE_COLOR = '#000000'
+  const categories: CategoryData[] = [
+    {
+      id: 'weddings',
+      name: translations.dashboard.categories.weddings,
+      images: [weddingsImg],
+    },
+    {
+      id: 'family_kids',
+      name: translations.dashboard.categories.family_kids,
+      images: [familyKidsImg],
+    },
+    {
+      id: 'christening',
+      name: translations.dashboard.categories.christening,
+      images: [christeningImg],
+    },
+    {
+      id: 'birthdays',
+      name: translations.dashboard.categories.birthdays,
+      images: [birthdaysImg],
+    },
+  ]
 
-  // Reset animation when category changes
-  useEffect(() => {
-    setProgress(0)
-    lastUpdateTimeRef.current = Date.now()
-  }, [activeCategory])
+  const categoryOrder = categories.map((cat) => cat.id)
 
-  // Handle category rotation and progress animation
-  useEffect(() => {
-    const updateProgress = () => {
-      if (!isPaused) {
-        const now = Date.now()
-        const deltaTime = now - lastUpdateTimeRef.current
-        lastUpdateTimeRef.current = now
+  const getNextCategory = (current: Category): Category => {
+    const currentIndex = categoryOrder.indexOf(current)
+    const nextIndex = (currentIndex + 1) % categoryOrder.length
+    return categoryOrder[nextIndex]
+  }
 
-        setProgress((prev) => {
-          const newProgress = prev + (deltaTime / 4000) * 100
+  const handleCategoryClick = (category: Category) => {
+    setActiveCategory(category)
+    setLoadingProgress(0)
+    setCurrentImageIndex(0)
 
-          if (newProgress >= 100) {
-            const nextCategory = (activeCategory + 1) % categories.length
-            setActiveCategory(nextCategory)
-            return 0
-          }
-
-          return newProgress
-        })
-      }
-
-      animationFrameRef.current = requestAnimationFrame(updateProgress)
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+    }
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
     }
 
-    animationFrameRef.current = requestAnimationFrame(updateProgress)
+    startLoading()
+  }
 
+  const startLoading = useCallback(() => {
+    const startTime = Date.now()
+    const duration = 4000 // 4 seconds
+
+    const animateLoading = () => {
+      const elapsed = Date.now() - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      setLoadingProgress(progress)
+
+      if (progress < 1) {
+        animationFrameRef.current = requestAnimationFrame(animateLoading)
+      } else {
+        setActiveCategory((prevCategory) => getNextCategory(prevCategory))
+        setLoadingProgress(0)
+        startLoading() // Restart the loading animation
+      }
+    }
+
+    animationFrameRef.current = requestAnimationFrame(animateLoading)
+  }, [setActiveCategory]) // Removed getNextCategory from dependency array
+
+  useEffect(() => {
+    startLoading()
     return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [categories, isPaused, activeCategory])
+  }, [startLoading]) // Added startLoading to the dependency array
 
-  const handleMouseEnter = (index: number) => {
-    if (index === activeCategory) {
-      setIsPaused(true)
-    }
+  const getCurrentCategory = () => {
+    return categories.find((cat) => cat.id === activeCategory) || categories[0]
   }
 
-  const handleMouseLeave = () => {
-    setIsPaused(false)
-  }
-
-  const getTextColor = (index: number) => {
-    if (index === activeCategory) {
-      return `linear-gradient(to right, ${ACTIVE_COLOR} ${progress}%, ${INITIAL_COLOR} ${progress}%)`
-    }
-    return INITIAL_COLOR
-  }
+  const currentCategory = getCurrentCategory()
+  const currentImage =
+    currentCategory.images[currentImageIndex % currentCategory.images.length]
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex flex-col items-center justify-between lg:flex-row lg:gap-16">
-        {/* Categories */}
-        <div className="mb-8 lg:mb-0 lg:w-2/3">
-          <ul className="space-y-14">
-            {categoriesArray.map((category, index) => (
-              <li
-                key={category.name}
-                className="cursor-pointer text-3xl transition-colors duration-300 hover:text-black lg:text-6xl xl:text-8xl"
-                style={{
-                  color: INITIAL_COLOR,
-                  backgroundImage: getTextColor(index),
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent', // here is the problem with invisible text
-                  backgroundClip: 'text',
-                }}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => setActiveCategory(index)}
-              >
-                {category.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Images */}
-        <div className="relative h-[600px] w-full overflow-hidden rounded-lg lg:w-[45%] xl:w-[33.33%]">
-          {categories.map((category, index) => (
-            <div
-              key={category.name}
-              className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                index === activeCategory
-                  ? 'translate-y-0 opacity-100'
-                  : 'translate-y-full opacity-0'
-              }`}
+    <div className="mx-auto flex w-full max-w-[1920px] flex-col gap-8 px-4 py-12 lg:flex-row lg:items-center lg:justify-between">
+      {/* Categories list */}
+      <div className="w-full space-y-12 lg:w-1/3">
+        {categories.map((category) => (
+          <div key={category.id} className="relative">
+            <motion.h2
+              className="cursor-pointer text-5xl font-light transition-colors duration-500 ease-in-out sm:text-6xl md:text-[5rem]"
+              style={{
+                backgroundImage:
+                  category.id === activeCategory
+                    ? `linear-gradient(to right, #000000 ${loadingProgress * 100}%, #8e8e8e ${loadingProgress * 100}%)`
+                    : 'none',
+                WebkitBackgroundClip:
+                  category.id === activeCategory ? 'text' : 'unset',
+                WebkitTextFillColor:
+                  category.id === activeCategory ? 'transparent' : '#8e8e8e',
+                color: category.id === activeCategory ? '#000000' : '#8e8e8e',
+              }}
+              onClick={() => handleCategoryClick(category.id)}
             >
-              <Image
-                src={category.image || '/placeholder.svg'}
-                alt={category.name}
-                fill
-                className="object-cover"
-                priority={index === 0}
-              />
-            </div>
-          ))}
-        </div>
+              {category.name}
+            </motion.h2>
+          </div>
+        ))}
+      </div>
+
+      {/* Image container */}
+      <div className="relative h-[50vh] w-full overflow-hidden rounded-lg sm:h-[60vh] md:h-[70vh] lg:h-[80vh] lg:w-3/6">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={activeCategory}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '-100%' }}
+            transition={{ duration: 0.8, ease: [0.45, 0, 0.55, 1] }}
+            className="absolute h-full w-full"
+          >
+            <Image
+              src={currentImage || '/placeholder.svg'}
+              alt={currentCategory.name}
+              fill
+              className="object-cover"
+              priority
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   )
