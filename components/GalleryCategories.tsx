@@ -96,7 +96,7 @@ export default function GalleryCategories({
     }
 
     animationFrameRef.current = requestAnimationFrame(animateLoading)
-  }, [setActiveCategory]) // Removed getNextCategory from dependency array
+  }, [setActiveCategory])
 
   useEffect(() => {
     startLoading()
@@ -119,13 +119,13 @@ export default function GalleryCategories({
     currentCategory.images[currentImageIndex % currentCategory.images.length]
 
   return (
-    <div className="mx-auto flex w-full max-w-[1920px] flex-col gap-8 px-4 py-12 lg:flex-row lg:items-center lg:justify-between">
+    <div className="mx-auto flex w-full max-w-[1920px] flex-col gap-8 py-12 lg:flex-row lg:items-center lg:justify-between">
       {/* Categories list */}
-      <div className="w-full space-y-12 lg:w-1/3">
+      <div className="grid w-full grid-cols-2 gap-y-6 md:gap-y-12 lg:w-1/3 lg:grid-cols-1 lg:space-y-12">
         {categories.map((category) => (
           <div key={category.id} className="relative">
             <motion.h2
-              className="cursor-pointer text-5xl font-light transition-colors duration-500 ease-in-out sm:text-6xl md:text-[5rem]"
+              className="cursor-pointer text-2xl font-light transition-colors duration-500 ease-in-out sm:text-4xl md:text-5xl xl:text-[5rem]"
               style={{
                 backgroundImage:
                   category.id === activeCategory
@@ -146,7 +146,7 @@ export default function GalleryCategories({
       </div>
 
       {/* Image container */}
-      <div className="relative h-[50vh] w-full overflow-hidden rounded-lg sm:h-[60vh] md:h-[70vh] lg:h-[80vh] lg:w-3/6">
+      <div className="relative h-[50vh] w-full overflow-hidden rounded-lg shadow-lg sm:h-[60vh] md:h-[70vh] lg:h-[80vh] lg:w-3/6">
         <AnimatePresence initial={false}>
           <motion.div
             key={activeCategory}

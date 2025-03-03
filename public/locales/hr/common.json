@@ -21,10 +21,12 @@
     "button": "Pogledaj sve"
   },
   "about": {
-    "text1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "text2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "text3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "info1": "fotografija i videozapisa",
+    "text1": "Foto&video Designo obrt je s dugogodišnjim iskustvom.",
+    "text2": "Osnovan je iz velike ljubavi prema fotografiji, točnije prema pretvaranju trenutaka u uspomene.",
+    "text3": "Osim studijskog fotografiranja, putujemo te dolazimo na Vašu kućnu adresu i u udobnosti vašeg doma stvaramo najljepše uspomene.",
+    "text4": "Cilj nam je da svaki Vaš trenutak ostane zauvijek zabilježen te prikazan što jedinstvenije.",
+    "text5": "Zadovoljni su klijenti naša najveća motivacija stoga nam se možete obratiti s povjerenjem.",
+    "info1": "fotografija",
     "info2": "klijenata",
     "info3": "godina iskustva",
     "readAllReviews": "Pročitaj sve recenzije",
@@ -105,7 +107,7 @@
     }
   },
   "footer": {
-    "text": "© 2025 Foto&video DESIGNO. Sva prava pridržana.",
+    "text": "Foto&video Designo. Sva prava pridržana.",
     "dashboard": "Dashboard",
     "developedby": "Developed by"
   }

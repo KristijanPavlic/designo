@@ -24,6 +24,8 @@ export interface Translations {
     text1: string
     text2: string
     text3: string
+    text4: string
+    text5: string
     info1: string
     info2: string
     info3: string

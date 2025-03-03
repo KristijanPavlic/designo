@@ -15,15 +15,15 @@ export default async function AboutPage({
 
   const stats = [
     {
-      number: '500+',
+      number: '10 000+',
       label: translations.about.info1,
     },
     {
-      number: '100+',
+      number: '400+',
       label: translations.about.info2,
     },
     {
-      number: '25+',
+      number: '30+',
       label: translations.about.info3,
     },
   ]
@@ -58,16 +58,18 @@ export default async function AboutPage({
   return (
     <section
       id="about-section"
-      className="container relative mx-auto scroll-m-24 px-4 py-20 lg:pb-32"
+      className="container relative mx-auto scroll-m-24 px-4 pt-10 pb-20 lg:pb-32"
     >
       <BackgroundLines />
-      <div className="grid gap-20 lg:grid-cols-2">
+      <div className="grid items-center gap-20 lg:grid-cols-2">
         {/* Text Column */}
-        <div className="mt-20 space-y-8">
+        <div className="space-y-8">
           {[
             translations.about.text1,
             translations.about.text2,
             translations.about.text3,
+            translations.about.text4,
+            translations.about.text5,
           ].map((text, i) => (
             <p
               key={i}

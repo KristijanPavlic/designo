@@ -82,7 +82,7 @@ export default function BackgroundSlider({
       if (nextIndex === null) {
         triggerTransition()
       }
-    }, 5000)
+    }, 4000)
     return () => clearInterval(interval)
   }, [sliderImages, triggerTransition, nextIndex])
 

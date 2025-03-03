@@ -21,10 +21,12 @@
     "button": "View more"
   },
   "about": {
-    "text1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "text2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "text3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "info1": "photos & videos",
+    "text1": "Foto&video Designo is a craft business with many years of experience.",
+    "text2": "It was founded out of a great love for photography, specifically for turning moments into memories.",
+    "text3": "In addition to studio photography, we travel to your home address and create the most beautiful memories in the comfort of your own home.",
+    "text4": "Our goal is to ensure every moment remains forever captured and displayed in the most unique way possible.",
+    "text5": "Satisfied clients are our greatest motivation, so feel free to reach out to us with confidence.",
+    "info1": "photos",
     "info2": "clients",
     "info3": "years of experience",
     "readAllReviews": "Read All Reviews",
@@ -105,7 +107,7 @@
     }
   },
   "footer": {
-    "text": "© 2025 Foto&video DESIGNO. All Rights Reserved.",
+    "text": "Foto&video Designo. All Rights Reserved.",
     "dashboard": "Dashboard",
     "developedby": "Developed by"
   }
