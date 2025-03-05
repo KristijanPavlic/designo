@@ -10,6 +10,8 @@ export interface MediaFile {
   id: string
   file: File
   preview: string
-  status: MediaStatus
+  status?: MediaStatus
   type: 'image' | 'video'
+  width?: number
+  height?: number
 }

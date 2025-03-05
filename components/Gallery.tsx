@@ -25,7 +25,7 @@ export default async function Gallery({
   return (
     <section
       id="gallery-section"
-      className={`${frankRuhlLibre.className} scroll-m-20 container relative mx-auto -mt-20 px-4 lg:scroll-m-24`}
+      className={`${frankRuhlLibre.className} container relative mx-auto -mt-20 scroll-m-20 px-4 lg:scroll-m-24`}
     >
       <BackgroundLines />
       <GalleryCategories translations={translations} />
