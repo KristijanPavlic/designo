@@ -19,6 +19,11 @@ export interface Translations {
     christening: string
     birthdays: string
     button: string
+    deleteAsset: string
+    delete: string
+    cancel: string
+    deleteSuccess: string
+    deleteError: string
   }
   about: {
     text1: string

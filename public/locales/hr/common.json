@@ -18,7 +18,12 @@
     "familykids": "Obitelj i djeca",
     "christening": "Krštenja",
     "birthdays": "Rođendani",
-    "button": "Pogledaj sve"
+    "button": "Pogledaj sve",
+    "deleteAsset": "Obriši medij",
+    "delete": "Obriši",
+    "cancel": "Odustani",
+    "deleteSuccess": "Medij uspješno obrisan",
+    "deleteError": "Greška pri brisanju medija"
   },
   "about": {
     "text1": "Foto&video Designo obrt je s dugogodišnjim iskustvom.",

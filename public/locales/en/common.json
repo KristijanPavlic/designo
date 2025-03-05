@@ -18,7 +18,12 @@
     "familykids": "Family & kids",
     "christening": "Christening",
     "birthdays": "Birthdays",
-    "button": "View more"
+    "button": "View more",
+    "deleteAsset": "Delete Asset",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "deleteSuccess": "Asset deleted successfully",
+    "deleteError": "Error deleting asset"
   },
   "about": {
     "text1": "Foto&video Designo is a craft business with many years of experience.",

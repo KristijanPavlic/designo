@@ -32,6 +32,8 @@ interface CategoryData {
   images: StaticImageData[]
 }
 
+const LIMIT = 9
+
 export default function GalleryCategories({
   translations,
 }: GalleryCategoriesProps) {
@@ -52,14 +54,19 @@ export default function GalleryCategories({
   >([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [displayCount, setDisplayCount] = useState(12)
+  const [hasMore, setHasMore] = useState(false)
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false)
   const [fullscreenIndex, setFullscreenIndex] = useState(0)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [resourceToDelete, setResourceToDelete] =
     useState<CloudinaryResource | null>(null)
 
-  // Use a ref to capture the category being requested (avoids race conditions)
+  // In‑memory cache: once images are fetched for a category they are cached until page reload.
+  const galleryCache = useRef<
+    Record<Category, { images: CloudinaryResource[]; hasMore: boolean }>
+  >({} as Record<Category, { images: CloudinaryResource[]; hasMore: boolean }>)
+
+  // Use a ref to capture the category being requested (to avoid race conditions)
   const selectedCategoryRef = useRef<Category | null>(null)
 
   const categories: CategoryData[] = [
@@ -120,25 +127,32 @@ export default function GalleryCategories({
     return () => {
       if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current)
-      if (intervalRef.current) clearInterval(intervalRef.current)
+      const currentInterval = intervalRef.current
+      if (currentInterval) clearInterval(currentInterval)
     }
   }, [startLoading])
 
-  // Handle category click – toggles gallery open state and fetches Cloudinary images if opening
+  // Handle category click – toggles gallery open state and fetches Cloudinary images if opening.
   const handleCategoryClick = async (category: Category) => {
     if (openGalleryCategory === category) {
       // Close the gallery and restart preview auto‑rotation
       setOpenGalleryCategory(null)
       setGalleryResources([])
-      setDisplayCount(12)
+      setHasMore(false)
       setLoadingProgress(0)
       setCurrentImageIndex(0)
       startLoading()
     } else {
-      // Set the selected category in the ref and state
-      selectedCategoryRef.current = category
       setActiveCategory(category)
       setOpenGalleryCategory(category)
+      // Check cache first.
+      if (galleryCache.current[category]) {
+        setGalleryResources(galleryCache.current[category].images)
+        setHasMore(galleryCache.current[category].hasMore)
+        return
+      }
+      // No cache: fetch initial images
+      selectedCategoryRef.current = category
       setGalleryResources([]) // clear previous images
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
@@ -149,10 +163,15 @@ export default function GalleryCategories({
       setError(null)
       try {
         const result = await fetchGalleryImages(category)
-        // Only update if the requested category is still the active one
         if (selectedCategoryRef.current === category) {
           if (result.success) {
             setGalleryResources(result.data)
+            const more = result.data.length === LIMIT
+            setHasMore(more)
+            galleryCache.current[category] = {
+              images: result.data,
+              hasMore: more,
+            }
           } else {
             setError(result.error || 'Failed to load images')
           }
@@ -166,7 +185,36 @@ export default function GalleryCategories({
     }
   }
 
-  // Handlers for gallery modal and deletion
+  // "View more" handler – fetches next batch of images and appends them.
+  const handleViewMore = async () => {
+    if (!openGalleryCategory) return
+    setIsLoading(true)
+    setError(null)
+    try {
+      const result = await fetchGalleryImages(openGalleryCategory)
+      if (result.success) {
+        const newImages = result.data
+        const updatedImages = [...galleryResources, ...newImages]
+        setGalleryResources(updatedImages)
+        const more = newImages.length === LIMIT
+        setHasMore(more)
+        // Update the cache.
+        galleryCache.current[openGalleryCategory] = {
+          images: updatedImages,
+          hasMore: more,
+        }
+      } else {
+        setError(result.error || 'Failed to load images')
+      }
+    } catch (err) {
+      setError('An unexpected error occurred')
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Handlers for gallery modal and deletion.
   const handleViewImage = (index: number) => {
     setFullscreenIndex(index)
     setIsFullscreenOpen(true)
@@ -200,6 +248,15 @@ export default function GalleryCategories({
         setGalleryResources((prev) =>
           prev.filter((item) => item.public_id !== resourceToDelete.public_id)
         )
+        // Update cache as well.
+        if (openGalleryCategory) {
+          galleryCache.current[openGalleryCategory] = {
+            images: galleryResources.filter(
+              (item) => item.public_id !== resourceToDelete.public_id
+            ),
+            hasMore,
+          }
+        }
       } else {
         setError(result.error || 'Failed to delete image')
       }
@@ -212,16 +269,11 @@ export default function GalleryCategories({
     }
   }
 
-  const handleViewMore = () => {
-    setDisplayCount((prev) => prev + 12)
-  }
-
-  // Updated gallery grid – note the auto‑rows class so grid cells have a fixed height.
+  // Updated gallery grid – uses a fixed row height so Next.js Image (fill) renders properly.
   const renderGalleryGrid = (resources: CloudinaryResource[]) => {
-    const displayedResources = resources.slice(0, displayCount)
     return (
       <div className="mt-8 grid auto-rows-[300px] grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {displayedResources.map((resource, index) => {
+        {resources.map((resource, index) => {
           const gridClass =
             index === 2
               ? 'col-span-1 md:col-span-2 row-span-2'
@@ -282,7 +334,7 @@ export default function GalleryCategories({
     )
   }
 
-  // Mobile layout: render category texts in a 2×2 grid only
+  // Mobile layout: render category texts in a 2×2 grid only.
   const renderMobileCategoryTextGrid = () => {
     return (
       <div className="grid grid-cols-2 gap-4 p-4">
@@ -400,7 +452,7 @@ export default function GalleryCategories({
                     ) : (
                       <>
                         {renderGalleryGrid(galleryResources)}
-                        {displayCount < galleryResources.length && (
+                        {hasMore && (
                           <div className="mt-8 flex justify-center">
                             <button
                               className="text-base text-gray-500 hover:text-gray-800"
@@ -503,7 +555,7 @@ export default function GalleryCategories({
             ) : (
               <>
                 {renderGalleryGrid(galleryResources)}
-                {displayCount < galleryResources.length && (
+                {hasMore && (
                   <div className="mt-4 flex justify-center">
                     <button
                       className="text-base text-gray-500 hover:text-gray-800"
@@ -563,9 +615,9 @@ export default function GalleryCategories({
           isOpen={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           onConfirm={handleConfirmDelete}
-          title="Delete Image"
-          confirmText="Delete"
-          cancelText="Cancel"
+          title={translations.categories.deleteAsset}
+          confirmText={translations.categories.delete}
+          cancelText={translations.categories.cancel}
         />
       </div>
     </>
