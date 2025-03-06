@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import type { MediaFile, MediaStatus } from '@/types/media'
 import MediaItem from './MediaItem'
+import { Translations } from '@/types/translations'
 
 interface MediaGridProps {
   mediaFiles: MediaFile[]
   activeTab: MediaStatus
   onStatusChange: (id: string, status: 'accepted' | 'rejected') => void
   onFullscreenOpen: (file: MediaFile) => void
+  translations: Translations
 }
 
 export default function MediaGrid({
@@ -16,6 +18,7 @@ export default function MediaGrid({
   activeTab,
   onStatusChange,
   onFullscreenOpen,
+  translations,
 }: MediaGridProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
@@ -23,7 +26,7 @@ export default function MediaGrid({
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {mediaFiles.length === 0 ? (
         <div className="col-span-full py-8 text-center text-gray-500">
-          No media files in this tab
+          {translations.dashboard.noAssets}
         </div>
       ) : (
         mediaFiles.map((file) => (

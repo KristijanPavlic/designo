@@ -23,7 +23,14 @@
     "delete": "Obriši",
     "cancel": "Odustani",
     "deleteSuccess": "Medij uspješno obrisan",
-    "deleteError": "Greška pri brisanju medija"
+    "deleteError": "Greška pri brisanju medija",
+    "noAssets": "Nema slika/videozapisa u ovoj kategoriji",
+    "close": "Zatvori kategoriju",
+    "tryAgain": "Pokušaj ponovno",
+    "viewFullscreen": "Pogledaj u punom zaslonu",
+    "error:": "Došlo je do neočekivane pogreške prilikom brisanja",
+    "errorDelete": "Greška pri brisanju slike/videa",
+    "errorLoading": "Greška pri učitavanju slika/videa"
   },
   "about": {
     "text1": "Foto&video Designo obrt je s dugogodišnjim iskustvom.",
@@ -104,6 +111,7 @@
     "accepted": "Prihvaćeno",
     "rejected": "Odbijeno",
     "removeAll": "Ukloni sve",
+    "noAssets": "Nema slika/videozapisa",
     "categories": {
       "weddings": "Vjenčanja",
       "family_kids": "Obitelj i djeca",

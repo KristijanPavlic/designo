@@ -24,6 +24,13 @@ export interface Translations {
     cancel: string
     deleteSuccess: string
     deleteError: string
+    noAssets: string
+    close: string
+    tryAgain: string
+    viewFullscreen: string
+    error: string
+    errorDelete: string
+    errorLoading: string
   }
   about: {
     text1: string
@@ -103,6 +110,7 @@ export interface Translations {
     categoryRequired: string
     uploadSuccess: string
     uploadError: string
+    noAssets: string
     categories: {
       weddings: string
       family_kids: string

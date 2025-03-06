@@ -52,8 +52,10 @@ export default function GalleryCategories({
   const [galleryResources, setGalleryResources] = useState<
     CloudinaryResource[]
   >([])
+  const [visibleCount, setVisibleCount] = useState(LIMIT)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // "hasMore" determines if there are still images hidden from view.
   const [hasMore, setHasMore] = useState(false)
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false)
   const [fullscreenIndex, setFullscreenIndex] = useState(0)
@@ -127,21 +129,38 @@ export default function GalleryCategories({
     return () => {
       if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current)
-      const currentInterval = intervalRef.current
-      if (currentInterval) clearInterval(currentInterval)
+      if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [startLoading])
 
-  // Handle category click – toggles gallery open state and fetches Cloudinary images if opening.
+  // Scroll into view when a category is open.
+  useEffect(() => {
+    if (openGalleryCategory) {
+      let element = document.getElementById(`gallery-${openGalleryCategory}`)
+      let offset = 200 // desktop offset
+      if (!element) {
+        element = document.getElementById('mobile-gallery')
+        offset = 0 // no offset for mobile
+      }
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        // On mobile, only scroll if the element isn't fully visible.
+        if (window.innerWidth < 768) {
+          if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+            return
+          }
+        }
+        const offsetPosition = rect.top + window.pageYOffset - offset
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+      }
+    }
+  }, [openGalleryCategory])
+
+  // Handle category click – toggles gallery open state and fetches images if opening.
   const handleCategoryClick = async (category: Category) => {
     if (openGalleryCategory === category) {
-      // Close the gallery and restart preview auto‑rotation
-      setOpenGalleryCategory(null)
-      setGalleryResources([])
-      setHasMore(false)
-      setLoadingProgress(0)
-      setCurrentImageIndex(0)
-      startLoading()
+      // Close the gallery and scroll preview into view.
+      handleCloseGallery()
     } else {
       setActiveCategory(category)
       setOpenGalleryCategory(category)
@@ -149,6 +168,7 @@ export default function GalleryCategories({
       if (galleryCache.current[category]) {
         setGalleryResources(galleryCache.current[category].images)
         setHasMore(galleryCache.current[category].hasMore)
+        setVisibleCount(LIMIT)
         return
       }
       // No cache: fetch initial images
@@ -166,18 +186,20 @@ export default function GalleryCategories({
         if (selectedCategoryRef.current === category) {
           if (result.success) {
             setGalleryResources(result.data)
-            const more = result.data.length === LIMIT
+            setVisibleCount(LIMIT)
+            // Determine if there are more images to show.
+            const more = result.data.length > LIMIT
             setHasMore(more)
             galleryCache.current[category] = {
               images: result.data,
               hasMore: more,
             }
           } else {
-            setError(result.error || 'Failed to load images')
+            setError(result.error || translations.categories.errorLoading)
           }
         }
       } catch (err) {
-        setError('An unexpected error occurred')
+        setError(translations.categories.error)
         console.error(err)
       } finally {
         setIsLoading(false)
@@ -185,33 +207,43 @@ export default function GalleryCategories({
     }
   }
 
-  // "View more" handler – fetches next batch of images and appends them.
-  const handleViewMore = async () => {
-    if (!openGalleryCategory) return
-    setIsLoading(true)
-    setError(null)
-    try {
-      const result = await fetchGalleryImages(openGalleryCategory)
-      if (result.success) {
-        const newImages = result.data
-        const updatedImages = [...galleryResources, ...newImages]
-        setGalleryResources(updatedImages)
-        const more = newImages.length === LIMIT
-        setHasMore(more)
-        // Update the cache.
-        galleryCache.current[openGalleryCategory] = {
-          images: updatedImages,
-          hasMore: more,
-        }
+  // Close gallery helper – resets the state and scrolls the preview container into view.
+  const handleCloseGallery = () => {
+    setOpenGalleryCategory(null)
+    setGalleryResources([])
+    setHasMore(false)
+    setLoadingProgress(0)
+    setCurrentImageIndex(0)
+    startLoading()
+
+    // Delay scrolling until the preview container is rendered.
+    setTimeout(() => {
+      let element: HTMLElement | null = null
+      if (window.innerWidth < 768) {
+        // Mobile preview container (no offset)
+        element = document.getElementById('mobile-preview')
       } else {
-        setError(result.error || 'Failed to load images')
+        // Desktop preview container with an offset for sticky nav
+        element = document.getElementById('gallery-preview')
       }
-    } catch (err) {
-      setError('An unexpected error occurred')
-      console.error(err)
-    } finally {
-      setIsLoading(false)
-    }
+      if (element) {
+        const offset = window.innerWidth < 768 ? 0 : 200
+        const rect = element.getBoundingClientRect()
+        const offsetPosition = rect.top + window.pageYOffset - offset
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+      }
+    }, 100)
+  }
+
+  // "View more" handler – reveals more images from the already fetched gallery.
+  const handleViewMore = () => {
+    if (!openGalleryCategory) return
+    const newVisibleCount = Math.min(
+      visibleCount + LIMIT,
+      galleryResources.length
+    )
+    setVisibleCount(newVisibleCount)
+    setHasMore(newVisibleCount < galleryResources.length)
   }
 
   // Handlers for gallery modal and deletion.
@@ -258,10 +290,10 @@ export default function GalleryCategories({
           }
         }
       } else {
-        setError(result.error || 'Failed to delete image')
+        setError(result.error || translations.categories.errorDelete)
       }
     } catch (err) {
-      setError('An unexpected error occurred while deleting')
+      setError(translations.categories.error)
       console.error(err)
     } finally {
       setIsDeleteDialogOpen(false)
@@ -269,11 +301,11 @@ export default function GalleryCategories({
     }
   }
 
-  // Updated gallery grid – uses a fixed row height so Next.js Image (fill) renders properly.
+  // Updated gallery grid – shows a slice of images based on visibleCount.
   const renderGalleryGrid = (resources: CloudinaryResource[]) => {
     return (
       <div className="mt-8 grid auto-rows-[300px] grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {resources.map((resource, index) => {
+        {resources.slice(0, visibleCount).map((resource, index) => {
           const gridClass =
             index === 2
               ? 'col-span-1 md:col-span-2 row-span-2'
@@ -312,7 +344,7 @@ export default function GalleryCategories({
                       e.stopPropagation()
                       handleViewImage(index)
                     }}
-                    aria-label="View fullscreen"
+                    aria-label={translations.categories.viewFullscreen}
                   >
                     <Maximize2 size={20} />
                   </button>
@@ -320,7 +352,7 @@ export default function GalleryCategories({
                     <button
                       className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-red-600 transition-colors hover:bg-white"
                       onClick={(e) => handleDeleteClick(e, resource)}
-                      aria-label="Delete image"
+                      aria-label={translations.categories.deleteAsset}
                     >
                       <Trash2 size={20} />
                     </button>
@@ -394,6 +426,7 @@ export default function GalleryCategories({
         >
           {/* Categories List */}
           <div
+            id="categories-container"
             className={`space-y-16 transition-all duration-500 ${
               openGalleryCategory ? 'w-full' : 'w-1/3'
             }`}
@@ -430,7 +463,7 @@ export default function GalleryCategories({
                 </motion.h2>
                 {/* When a category is open, display its Cloudinary gallery */}
                 {openGalleryCategory === category.id && (
-                  <div className="mt-8 w-full">
+                  <div id={`gallery-${category.id}`} className="mt-8 w-full">
                     {isLoading ? (
                       <div className="flex h-64 items-center justify-center">
                         <Spinner size="lg" />
@@ -442,25 +475,36 @@ export default function GalleryCategories({
                           className="mt-2 text-sm font-medium underline"
                           onClick={() => handleCategoryClick(category.id)}
                         >
-                          Try again
+                          {translations.categories.tryAgain}
                         </button>
                       </div>
                     ) : galleryResources.length === 0 ? (
                       <div className="rounded-md bg-gray-50 p-4 text-gray-800">
-                        <p>No images found in this category.</p>
+                        <p>{translations.categories.noAssets}</p>
                       </div>
                     ) : (
                       <>
                         {renderGalleryGrid(galleryResources)}
-                        {hasMore && (
+                        {hasMore ? (
                           <div className="mt-8 flex justify-center">
                             <button
                               className="text-base text-gray-500 hover:text-gray-800"
                               onClick={handleViewMore}
                             >
-                              View more
+                              {translations.categories.button}
                             </button>
                           </div>
+                        ) : (
+                          galleryResources.length > 0 && (
+                            <div className="mt-8 flex justify-center">
+                              <button
+                                className="text-base text-gray-500 hover:text-gray-800"
+                                onClick={handleCloseGallery}
+                              >
+                                {translations.categories.close}
+                              </button>
+                            </div>
+                          )
                         )}
                       </>
                     )}
@@ -472,7 +516,10 @@ export default function GalleryCategories({
 
           {/* Preview Image Container (shown when no gallery is open) */}
           {!openGalleryCategory && (
-            <div className="relative h-[50vh] w-full overflow-hidden rounded-lg shadow-lg sm:h-[60vh] md:h-[70vh] lg:h-[80vh] lg:w-3/6">
+            <div
+              id="gallery-preview"
+              className="relative h-[50vh] w-full overflow-hidden rounded-lg shadow-lg sm:h-[60vh] md:h-[70vh] lg:h-[80vh] lg:w-3/6"
+            >
               <AnimatePresence initial={false}>
                 <motion.div
                   key={activeCategory}
@@ -520,20 +567,20 @@ export default function GalleryCategories({
           isOpen={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           onConfirm={handleConfirmDelete}
-          title="Delete Image"
-          confirmText="Delete"
-          cancelText="Cancel"
+          title={translations.categories.deleteAsset}
+          confirmText={translations.categories.delete}
+          cancelText={translations.categories.cancel}
         />
       </div>
 
       {/* Mobile Layout */}
       <div className="block lg:hidden">
         {/* Render a 2×2 grid of category texts only */}
-        {renderMobileCategoryTextGrid()}
+        <div id="mobile-categories">{renderMobileCategoryTextGrid()}</div>
 
         {/* Below the category grid, show the preview container or gallery */}
         {openGalleryCategory ? (
-          <div className="mt-4 px-4">
+          <div id="mobile-gallery" className="mt-4 px-4">
             {isLoading ? (
               <div className="flex h-48 items-center justify-center">
                 <Spinner size="sm" />
@@ -545,31 +592,45 @@ export default function GalleryCategories({
                   className="mt-1 text-xs font-medium underline"
                   onClick={() => handleCategoryClick(openGalleryCategory)}
                 >
-                  Try again
+                  {translations.categories.tryAgain}
                 </button>
               </div>
             ) : galleryResources.length === 0 ? (
               <div className="rounded-md bg-gray-50 p-2 text-gray-800">
-                <p>No images found in this category.</p>
+                <p>{translations.categories.noAssets}</p>
               </div>
             ) : (
               <>
                 {renderGalleryGrid(galleryResources)}
-                {hasMore && (
+                {hasMore ? (
                   <div className="mt-4 flex justify-center">
                     <button
                       className="text-base text-gray-500 hover:text-gray-800"
                       onClick={handleViewMore}
                     >
-                      View more
+                      {translations.categories.button}
                     </button>
                   </div>
+                ) : (
+                  galleryResources.length > 0 && (
+                    <div className="mt-4 flex justify-center">
+                      <button
+                        className="text-base text-gray-500 hover:text-gray-800"
+                        onClick={handleCloseGallery}
+                      >
+                        {translations.categories.close}
+                      </button>
+                    </div>
+                  )
                 )}
               </>
             )}
           </div>
         ) : (
-          <div className="relative mt-4 h-[50vh] w-full overflow-hidden rounded-lg shadow-lg">
+          <div
+            id="mobile-preview"
+            className="relative mt-4 h-[50vh] w-full overflow-hidden rounded-lg shadow-lg"
+          >
             <AnimatePresence initial={false}>
               <motion.div
                 key={activeCategory}

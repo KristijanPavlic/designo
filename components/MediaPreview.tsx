@@ -79,7 +79,7 @@ export default function MediaPreview({
   }
 
   return (
-    <div className="pt-10 space-y-7">
+    <div className="space-y-7 pt-10">
       <h2 className="text-3xl font-light">
         {translations.dashboard.mediaPreview}
       </h2>
@@ -112,6 +112,7 @@ export default function MediaPreview({
             activeTab={activeTab}
             onStatusChange={onStatusChange}
             onFullscreenOpen={handleFullscreenOpen}
+            translations={translations}
           />
 
           {mediaFiles.length > 0 && (

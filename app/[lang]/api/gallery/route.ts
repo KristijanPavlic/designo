@@ -18,7 +18,9 @@ export async function GET() {
         .max_results(10)
         .execute()
 
-      return result.resources.map((resource: { secure_url: string }) => resource.secure_url)
+      return result.resources.map(
+        (resource: { secure_url: string }) => resource.secure_url
+      )
     }
 
     // Fetch images for all categories

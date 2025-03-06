@@ -23,7 +23,14 @@
     "delete": "Delete",
     "cancel": "Cancel",
     "deleteSuccess": "Asset deleted successfully",
-    "deleteError": "Error deleting asset"
+    "deleteError": "Error deleting asset",
+    "noAssets": "No images/videos in this category",
+    "close": "Close category",
+    "tryAgain": "Try Again",
+    "viewFullscreen": "View fullscreen",
+    "error:": "An unexpected error occurred",
+    "errorDelete": "Failed to delete image/video",
+    "errorLoading": "Failed to load assets"
   },
   "about": {
     "text1": "Foto&video Designo is a craft business with many years of experience.",
@@ -104,6 +111,7 @@
     "accepted": "Accepted",
     "rejected": "Rejected",
     "removeAll": "Remove All",
+    "noAssets": "No assets in this category",
     "categories": {
       "weddings": "Weddings",
       "family_kids": "Family & Kids",
