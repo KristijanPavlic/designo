@@ -26,12 +26,35 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://foto-designo.com'),
-  title: {
-    default: 'Foto & video DESIGNO',
-    template: '%s | Foto & video DESIGNO',
-  },
+  title: 'Foto & video DESIGNO',
   description:
     'Professional photography and video services for your special moments',
+  icons: [
+    {
+      url: '/favicon.ico',
+      href: '/favicon.ico',
+      sizes: '32x32',
+      type: 'image/ico',
+    },
+    {
+      url: '/apple-touch-icon.png',
+      href: '/apple-touch-icon.png',
+      sizes: '180x180',
+      type: 'apple-touch-icon',
+    },
+    {
+      url: '/icon-192x192.png',
+      href: '/icon-192x192.png',
+      sizes: '192x192',
+      type: 'image/png',
+    },
+    {
+      url: '/icon-512x512.png',
+      href: '/icon-512x512.png',
+      sizes: '512x512',
+      type: 'image/png',
+    },
+  ],
   keywords: [
     'photography',
     'fotografiranje',
@@ -61,7 +84,7 @@ export const metadata: Metadata = {
     'profesionalna fotografija',
     'profesionalan video',
   ],
-  authors: [{ name: 'KriPa Web' }],
+  authors: [{ name: 'Kristijan Pavlic', url: 'https://kripaweb.com/' }],
   creator: 'KriPa Web',
   publisher: 'Foto & video DESIGNO',
   formatDetection: {
@@ -84,27 +107,34 @@ export const metadata: Metadata = {
     description:
       'Professional photography and video services for your special moments',
     siteName: 'Foto & video DESIGNO',
+    url: 'https://foto-designo.com',
     images: [
       {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Foto & video DESIGNO',
+        url: '/favicon.ico',
+        width: 32,
+        height: 32,
+        alt: 'DESIGNO Web Icon',
+      },
+      {
+        url: '/apple-touch-icon.png',
+        width: 180,
+        height: 180,
+        alt: 'DESIGNO Web Apple Touch Icon',
+      },
+      {
+        url: '/icon-192x192.png',
+        width: 192,
+        height: 192,
+        alt: 'DESIGNO Web Android Chrome 192x192',
+      },
+      {
+        url: '/icon-512x512.png',
+        width: 512,
+        height: 512,
+        alt: 'DESIGNO Web Android Chrome 512x512',
       },
     ],
   },
-  /* twitter: {
-    card: 'summary_large_image',
-    title: 'Foto & video DESIGNO',
-    description:
-      'Professional photography and video services for your special moments',
-    images: ['/twitter-image.jpg'],
-    creator: '@yourtwitterhandle',
-  },
-  verification: {
-    google: 'your-google-verification-code',
-    yandex: 'your-yandex-verification-code',
-  }, */
   category: 'photography',
 }
 

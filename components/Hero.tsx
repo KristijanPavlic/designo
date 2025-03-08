@@ -13,8 +13,8 @@ import type { BackgroundImage } from '@/types/images'
 
 import weddingsDesktop from '../public/images/slider_desktop_weddings.jpg'
 import weddingsMobile from '../public/images/slider_mobile_weddings.jpg'
-import familyDesktopMobile from '../public/images/slider_desktop_mobile_family.jpg'
 import christeningDesktopMobile from '../public/images/slider_desktop_mobile_christening.jpg'
+import newbornDesktopMobile from '../public/images/slider_desktop_mobile_newborn.jpg'
 import birthdaysDesktop from '../public/images/slider_desktop_birthdays.jpg'
 import birthdaysMobile from '../public/images/slider_mobile_birthdays.jpg'
 
@@ -30,13 +30,13 @@ const backgroundImages: BackgroundImage[] = [
     platform: 'mobile',
   },
   {
-    src: familyDesktopMobile,
-    alt: 'Family Desktop & Mobile',
+    src: christeningDesktopMobile,
+    alt: 'Christening Desktop & Mobile',
     platform: 'both',
   },
   {
-    src: christeningDesktopMobile,
-    alt: 'Christening Desktop & Mobile',
+    src: newbornDesktopMobile,
+    alt: 'Family Desktop & Mobile',
     platform: 'both',
   },
   {

@@ -58,12 +58,15 @@ export default async function AboutPage({
   return (
     <section
       id="about-section"
-      className="container relative mx-auto scroll-m-24 px-4 pt-10 pb-20 lg:pb-32"
+      className="container relative mx-auto scroll-m-24 px-4 pb-20 pt-10 lg:pb-32"
     >
       <BackgroundLines />
+      <h2 className="pt-10 pb-6 text-center text-2xl font-light">
+        {translations.navigation.about}
+      </h2>
       <div className="grid items-center gap-20 lg:grid-cols-2">
         {/* Text Column */}
-        <div className="space-y-8">
+        <div className="space-y-8 md:text-left text-center">
           {[
             translations.about.text1,
             translations.about.text2,

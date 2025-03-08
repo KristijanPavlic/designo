@@ -20,6 +20,7 @@ export default function BackgroundSlider({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [nextIndex, setNextIndex] = useState<number | null>(null)
   const [animateNext, setAnimateNext] = useState(false)
+  const [firstImageLoaded, setFirstImageLoaded] = useState(false) // new spinner state
 
   // Set mounted flag after first render.
   useEffect(() => {
@@ -27,8 +28,6 @@ export default function BackgroundSlider({
   }, [])
 
   // Returns images in the correct order.
-  // On mobile, this returns [weddingsMobile, familyDesktopMobile, christeningDesktopMobile, birthdaysMobile].
-  // On desktop, it returns [weddingsDesktop, familyDesktopMobile, christeningDesktopMobile, birthdaysDesktop].
   const getOrderedImages = useCallback((): BackgroundImage[] => {
     if (typeof window !== 'undefined') {
       const isMobile = window.innerWidth < mobileBreakpoint
@@ -48,6 +47,7 @@ export default function BackgroundSlider({
       const ordered = getOrderedImages()
       setSliderImages(ordered)
       setCurrentIndex(0)
+      setFirstImageLoaded(false) // reset spinner state on mount
     }
   }, [hasMounted, getOrderedImages])
 
@@ -118,8 +118,20 @@ export default function BackgroundSlider({
           fill
           style={{ objectFit: 'cover', filter: 'brightness(85%)' }}
           priority
+          onLoadingComplete={() => {
+            if (currentIndex === 0) {
+              setFirstImageLoaded(true)
+            }
+          }}
         />
       </div>
+
+      {/* Spinner overlay for first image */}
+      {currentIndex === 0 && !firstImageLoaded && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
+          <div className="h-12 w-12 animate-spin rounded-full border-b-4 border-t-4 border-white"></div>
+        </div>
+      )}
 
       {/* Next image slides in from the right */}
       {nextIndex !== null && (

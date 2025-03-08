@@ -14,11 +14,22 @@ import Spinner from './ui/spinner'
 import GalleryFullscreenModal from './gallery/gallery-fullscreen-modal'
 import ConfirmDialog from './ui/ConfirmDialog'
 import type { CloudinaryResource } from '@/types/cloudinary'
+import { Alexandria } from 'next/font/google'
 
-import weddingsImg from 'public/images/slider_mobile_weddings.jpg'
-import familyKidsImg from 'public/images/slider_desktop_mobile_family.jpg'
-import christeningImg from 'public/images/slider_desktop_mobile_christening.jpg'
-import cake_smash_birthdaysImg from 'public/images/slider_mobile_birthdays.jpg'
+import weddingsImg from 'public/images/weddings.jpg'
+import christeningImg from 'public/images/christening.jpg'
+import cake_smash_birthdaysImg from 'public/images/cake_smash.jpg'
+import familyKidsImg from 'public/images/newborn.jpg'
+
+const alexandria = Alexandria({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['latin'],
+  fallback: ['sans-serif'],
+  style: 'normal',
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: true,
+})
 
 interface GalleryCategoriesProps {
   translations: Translations
@@ -310,7 +321,6 @@ export default function GalleryCategories({
     }
   }
 
-  // Updated gallery grid – shows a slice of images based on visibleCount.
   const renderGalleryGrid = (resources: CloudinaryResource[]) => {
     return (
       <div className="mt-8 grid auto-rows-[300px] grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
@@ -378,47 +388,52 @@ export default function GalleryCategories({
   // Mobile layout: render category texts in a 2×2 grid only.
   const renderMobileCategoryTextGrid = () => {
     return (
-      <div className="grid grid-cols-2 gap-4 p-4">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className="flex items-center justify-center rounded border p-2"
-          >
-            <motion.h2
-              className="cursor-pointer text-xl font-light transition-colors duration-500 ease-in-out"
-              style={{
-                backgroundImage:
-                  category.id === activeCategory &&
-                  openGalleryCategory !== category.id
-                    ? `linear-gradient(to right, #000000 ${loadingProgress * 100}%, #8e8e8e ${loadingProgress * 100}%)`
-                    : 'none',
-                WebkitBackgroundClip:
-                  category.id === activeCategory &&
-                  openGalleryCategory !== category.id
-                    ? 'text'
-                    : 'unset',
-                WebkitTextFillColor:
-                  category.id === activeCategory &&
-                  openGalleryCategory !== category.id
-                    ? 'transparent'
-                    : openGalleryCategory === category.id
-                      ? '#000000'
-                      : '#8e8e8e',
-                color:
-                  openGalleryCategory === category.id
-                    ? '#000000'
-                    : category.id === activeCategory &&
-                        openGalleryCategory !== category.id
-                      ? '#000000'
-                      : '#8e8e8e',
-              }}
-              onClick={() => handleCategoryClick(category.id)}
+      <>
+        <h2 className={`${alexandria.className} pt-8 text-center font-sans text-2xl font-light`}>
+          {translations.navigation.gallery}
+        </h2>
+        <div className="grid grid-cols-2 gap-4 pb-4 pt-12">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="flex items-center justify-center rounded-md border p-2 hover:bg-[var(--light-gray)]"
             >
-              {category.name}
-            </motion.h2>
-          </div>
-        ))}
-      </div>
+              <motion.h2
+                className="cursor-pointer text-center text-xl font-light transition-colors duration-500 ease-in-out"
+                style={{
+                  backgroundImage:
+                    category.id === activeCategory &&
+                    openGalleryCategory !== category.id
+                      ? `linear-gradient(to right, #000000 ${loadingProgress * 100}%, #8e8e8e ${loadingProgress * 100}%)`
+                      : 'none',
+                  WebkitBackgroundClip:
+                    category.id === activeCategory &&
+                    openGalleryCategory !== category.id
+                      ? 'text'
+                      : 'unset',
+                  WebkitTextFillColor:
+                    category.id === activeCategory &&
+                    openGalleryCategory !== category.id
+                      ? 'transparent'
+                      : openGalleryCategory === category.id
+                        ? '#000000'
+                        : '#8e8e8e',
+                  color:
+                    openGalleryCategory === category.id
+                      ? '#000000'
+                      : category.id === activeCategory &&
+                          openGalleryCategory !== category.id
+                        ? '#000000'
+                        : '#8e8e8e',
+                }}
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                {category.name}
+              </motion.h2>
+            </div>
+          ))}
+        </div>
+      </>
     )
   }
 
