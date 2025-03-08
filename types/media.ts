@@ -1,8 +1,8 @@
 export type MediaCategory =
   | 'weddings'
-  | 'family_kids'
   | 'christening'
-  | 'birthdays'
+  | 'newborn'
+  | 'cake_smash_birthdays'
 
 export type MediaStatus = 'pending' | 'accepted' | 'rejected'
 

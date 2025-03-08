@@ -117,7 +117,7 @@ export default function MediaUploader({ translations }: MediaUploaderProps) {
   }, [selectedCategory, mediaFiles, translations])
 
   return (
-    <div className="space-y-6 mt-20">
+    <div className="mt-20 space-y-6">
       <h1 className="text-3xl font-light">
         {translations.dashboard.uploadMedia}
       </h1>
@@ -150,7 +150,7 @@ export default function MediaUploader({ translations }: MediaUploaderProps) {
             className="rounded bg-gray-500 px-6 py-2 text-white hover:bg-gray-600 disabled:opacity-50"
           >
             {isUploading
-              ? 'Uploading...'
+              ? translations.dashboard.uploading
               : translations.dashboard.uploadToCloudinary}
           </button>
         </div>

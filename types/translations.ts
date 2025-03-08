@@ -15,12 +15,13 @@ export interface Translations {
   }
   categories: {
     weddings: string
-    familykids: string
     christening: string
-    birthdays: string
+    newborn: string
+    cake_smash_birthdays: string
     button: string
     deleteAsset: string
     delete: string
+    deleting: string
     cancel: string
     deleteSuccess: string
     deleteError: string
@@ -110,12 +111,13 @@ export interface Translations {
     categoryRequired: string
     uploadSuccess: string
     uploadError: string
+    uploading: string
     noAssets: string
     categories: {
       weddings: string
-      family_kids: string
       christening: string
-      birthdays: string
+      newborn: string
+      cake_smash_birthdays: string
     }
   }
   footer: {

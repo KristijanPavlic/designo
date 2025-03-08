@@ -15,12 +15,13 @@
   },
   "categories": {
     "weddings": "Weddings",
-    "familykids": "Family & kids",
     "christening": "Christening",
-    "birthdays": "Birthdays",
+    "newborn": "Newborn",
+    "cake_smash_birthdays": "Cake Smash / Birthdays",
     "button": "View more",
     "deleteAsset": "Delete Asset",
     "delete": "Delete",
+    "deleting": "Deleting...",
     "cancel": "Cancel",
     "deleteSuccess": "Asset deleted successfully",
     "deleteError": "Error deleting asset",
@@ -114,9 +115,9 @@
     "noAssets": "No assets in this category",
     "categories": {
       "weddings": "Weddings",
-      "family_kids": "Family & Kids",
       "christening": "Christening",
-      "birthdays": "Birthdays"
+      "newborn": "Newborn",
+      "cake_smash_birthdays": "Cake Smash / Birthdays"
     }
   },
   "footer": {

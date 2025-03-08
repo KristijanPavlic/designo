@@ -11,6 +11,7 @@ import {
   DoorClosedIcon as Close,
 } from 'lucide-react'
 import type { MediaFile, MediaStatus } from '@/types/media'
+import Image from 'next/image'
 
 interface FullscreenModalProps {
   media: MediaFile
@@ -61,10 +62,8 @@ export default function FullscreenModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
       onClick={handleBackdropClick}
     >
-      <div
-        ref={modalRef}
-        className="relative max-h-[90vh] max-w-4xl overflow-hidden"
-      >
+      {/* Updated container: using full height and width */}
+      <div ref={modalRef} className="relative h-full w-full overflow-hidden">
         <button
           title="Close"
           onClick={onClose}
@@ -74,15 +73,18 @@ export default function FullscreenModal({
         </button>
 
         {media.type === 'image' ? (
-          <img
-            src={media.preview || '/placeholder.svg'}
-            alt="Fullscreen preview"
-            className="max-h-[90vh] max-w-full object-contain"
-          />
+          <div className="relative h-full w-full">
+            <Image
+              src={media.preview || '/placeholder.svg'}
+              alt="Fullscreen preview"
+              fill
+              className="object-contain"
+            />
+          </div>
         ) : (
           <video
             src={media.preview}
-            className="max-h-[90vh] max-w-full"
+            className="h-full w-full"
             controls
             autoPlay
           />

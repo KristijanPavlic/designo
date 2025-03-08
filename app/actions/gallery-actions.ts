@@ -38,7 +38,10 @@ export async function fetchGalleryImages(category: string): Promise<{
   }
 }
 
-export async function deleteGalleryImage(publicId: string): Promise<{
+export async function deleteGalleryImage(
+  publicId: string,
+  resourceType: string = 'image'
+): Promise<{
   success: boolean
   error?: string
 }> {
@@ -53,7 +56,8 @@ export async function deleteGalleryImage(publicId: string): Promise<{
       }
     }
 
-    const result = await deleteCloudinaryResource(publicId)
+    // Pass resourceType to the deletion function
+    const result = await deleteCloudinaryResource(publicId, resourceType)
 
     if (result) {
       return {
@@ -62,7 +66,7 @@ export async function deleteGalleryImage(publicId: string): Promise<{
     } else {
       return {
         success: false,
-        error: 'Failed to delete image. Please try again later.',
+        error: 'Failed to delete asset. Please try again later.',
       }
     }
   } catch (error) {

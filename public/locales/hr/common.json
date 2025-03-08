@@ -14,13 +14,14 @@
     "cta": "Istraži"
   },
   "categories": {
-    "weddings": "Vjenčanja",
-    "familykids": "Obitelj i djeca",
-    "christening": "Krštenja",
-    "birthdays": "Rođendani",
+    "weddings": "Vjenčanje",
+    "christening": "Krštenje",
+    "newborn": "Foto beba",
+    "cake_smash_birthdays": "Cake Smash / Rođendani",
     "button": "Pogledaj sve",
     "deleteAsset": "Obriši medij",
     "delete": "Obriši",
+    "deleting": "Brisanje...",
     "cancel": "Odustani",
     "deleteSuccess": "Medij uspješno obrisan",
     "deleteError": "Greška pri brisanju medija",
@@ -113,10 +114,10 @@
     "removeAll": "Ukloni sve",
     "noAssets": "Nema slika/videozapisa",
     "categories": {
-      "weddings": "Vjenčanja",
-      "family_kids": "Obitelj i djeca",
+      "weddings": "Vjenčanje",
       "christening": "Krštenje",
-      "birthdays": "Rođendani"
+      "newborn": "Foto beba",
+      "cake_smash_birthdays": "Cake Smash / Rođendani"
     }
   },
   "footer": {

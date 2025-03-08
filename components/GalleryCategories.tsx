@@ -18,13 +18,13 @@ import type { CloudinaryResource } from '@/types/cloudinary'
 import weddingsImg from 'public/images/slider_mobile_weddings.jpg'
 import familyKidsImg from 'public/images/slider_desktop_mobile_family.jpg'
 import christeningImg from 'public/images/slider_desktop_mobile_christening.jpg'
-import birthdaysImg from 'public/images/slider_mobile_birthdays.jpg'
+import cake_smash_birthdaysImg from 'public/images/slider_mobile_birthdays.jpg'
 
 interface GalleryCategoriesProps {
   translations: Translations
 }
 
-type Category = 'weddings' | 'family_kids' | 'christening' | 'birthdays'
+type Category = 'weddings' | 'newborn' | 'christening' | 'cake_smash_birthdays'
 
 interface CategoryData {
   id: Category
@@ -62,6 +62,8 @@ export default function GalleryCategories({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [resourceToDelete, setResourceToDelete] =
     useState<CloudinaryResource | null>(null)
+  // New state to track deletion progress.
+  const [isDeleting, setIsDeleting] = useState(false)
 
   // In‑memory cache: once images are fetched for a category they are cached until page reload.
   const galleryCache = useRef<
@@ -78,19 +80,19 @@ export default function GalleryCategories({
       images: [weddingsImg],
     },
     {
-      id: 'family_kids',
-      name: translations.dashboard.categories.family_kids,
-      images: [familyKidsImg],
-    },
-    {
       id: 'christening',
       name: translations.dashboard.categories.christening,
       images: [christeningImg],
     },
     {
-      id: 'birthdays',
-      name: translations.dashboard.categories.birthdays,
-      images: [birthdaysImg],
+      id: 'cake_smash_birthdays',
+      name: translations.dashboard.categories.cake_smash_birthdays,
+      images: [cake_smash_birthdaysImg],
+    },
+    {
+      id: 'newborn',
+      name: translations.dashboard.categories.newborn,
+      images: [familyKidsImg],
     },
   ]
 
@@ -274,8 +276,14 @@ export default function GalleryCategories({
   const handleConfirmDelete = async () => {
     if (!resourceToDelete) return
 
+    // Set deletion in progress.
+    setIsDeleting(true)
     try {
-      const result = await deleteGalleryImage(resourceToDelete.public_id)
+      const result = await deleteGalleryImage(
+        resourceToDelete.public_id,
+        resourceToDelete.resource_type
+      )
+
       if (result.success) {
         setGalleryResources((prev) =>
           prev.filter((item) => item.public_id !== resourceToDelete.public_id)
@@ -296,6 +304,7 @@ export default function GalleryCategories({
       setError(translations.categories.error)
       console.error(err)
     } finally {
+      setIsDeleting(false)
       setIsDeleteDialogOpen(false)
       setResourceToDelete(null)
     }
@@ -568,7 +577,9 @@ export default function GalleryCategories({
           onClose={() => setIsDeleteDialogOpen(false)}
           onConfirm={handleConfirmDelete}
           title={translations.categories.deleteAsset}
-          confirmText={translations.categories.delete}
+          confirmText={
+            isDeleting ? 'Deleting...' : translations.categories.delete
+          }
           cancelText={translations.categories.cancel}
         />
       </div>
@@ -677,7 +688,11 @@ export default function GalleryCategories({
           onClose={() => setIsDeleteDialogOpen(false)}
           onConfirm={handleConfirmDelete}
           title={translations.categories.deleteAsset}
-          confirmText={translations.categories.delete}
+          confirmText={
+            isDeleting
+              ? translations.categories.deleting
+              : translations.categories.delete
+          }
           cancelText={translations.categories.cancel}
         />
       </div>

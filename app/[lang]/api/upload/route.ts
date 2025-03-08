@@ -19,7 +19,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate folder name
-    const validFolders = ['weddings', 'family_kids', 'christening', 'birthdays']
+    const validFolders = [
+      'weddings',
+      'christening',
+      'cake_smash_birthdays',
+      'newborn',
+    ]
     if (!validFolders.includes(folder)) {
       return NextResponse.json({ error: 'Invalid folder' }, { status: 400 })
     }

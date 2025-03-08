@@ -19,9 +19,9 @@ export default function CategorySelector({
 
   const categories: MediaCategory[] = [
     'weddings',
-    'family_kids',
     'christening',
-    'birthdays',
+    'cake_smash_birthdays',
+    'newborn',
   ]
 
   const handleCategorySelect = (category: MediaCategory) => {

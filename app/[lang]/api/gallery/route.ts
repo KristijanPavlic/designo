@@ -24,19 +24,20 @@ export async function GET() {
     }
 
     // Fetch images for all categories
-    const [weddings, family_kids, christening, birthdays] = await Promise.all([
-      fetchFolderImages('weddings'),
-      fetchFolderImages('family_kids'),
-      fetchFolderImages('christening'),
-      fetchFolderImages('birthdays'),
-    ])
+    const [weddings, christening, cake_smash_birthdays, newborn] =
+      await Promise.all([
+        fetchFolderImages('weddings'),
+        fetchFolderImages('christening'),
+        fetchFolderImages('cake_smash_birthdays'),
+        fetchFolderImages('newborn'),
+      ])
 
     return NextResponse.json({
       images: {
         weddings,
-        family_kids,
         christening,
-        birthdays,
+        cake_smash_birthdays,
+        newborn,
       },
     })
   } catch (error) {

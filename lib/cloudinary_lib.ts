@@ -39,10 +39,13 @@ export async function getCloudinaryResources(
 }
 
 export async function deleteCloudinaryResource(
-  publicId: string
+  publicId: string,
+  resourceType: string = 'image'
 ): Promise<boolean> {
   try {
-    const result = (await cloudinary.uploader.destroy(publicId)) as {
+    const result = (await cloudinary.uploader.destroy(publicId, {
+      resource_type: resourceType,
+    })) as {
       result: string
     }
     return result.result === 'ok'
