@@ -123,5 +123,11 @@
     "text": "Foto&video Designo. Sva prava pridržana.",
     "dashboard": "Dashboard",
     "developedby": "Developed by"
+  },
+  "not_found": {
+    "title": "404 - Stranica nije pronađena | Foto & video DESIGNO",
+    "text1": "Stranica nije pronađena",
+    "text2": "Stranica koju tražite nije pronađena. Molimo provjerite URL ili se vratite na početnu stranicu.",
+    "backToHome": "Povratak na početnu stranicu"
   }
 }

@@ -123,4 +123,10 @@ export interface Translations {
     dashboard: string
     developedby: string
   }
+  not_found: {
+    title: string
+    text1: string
+    text2: string
+    backToHome: string
+  }
 }
