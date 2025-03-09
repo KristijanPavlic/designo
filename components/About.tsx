@@ -40,18 +40,18 @@ export default async function AboutPage({
     {
       name: translations.about.reviews.review2.name,
       image:
-        'https://lh3.googleusercontent.com/a-/ALV-UjVcxTb1zWpcD0rF8CCjm30qE-gbGZ93ykNLRKvL8uYkf9Am2ise=w75-h75-p-rp-mo-br100',
+        'https://lh3.googleusercontent.com/a/ACg8ocI0jJOO-hq1GGwL7h6DJO-7Obf9i808rhk-H85A3OGS8hwibQ=w75-h75-p-rp-mo-br100',
       rating: 5,
       text: translations.about.reviews.review2.text,
-      link: 'https://maps.app.goo.gl/NzSMBU5dWYhk1CJd6',
+      link: 'https://maps.app.goo.gl/66JJiA7Zd1jQB2ra7',
     },
     {
       name: translations.about.reviews.review3.name,
       image:
-        'https://lh3.googleusercontent.com/a-/ALV-UjVT_CNx19byinTwWo2HFO8JEULKEatgfiV7PZch4sZfSXckysU=w75-h75-p-rp-mo-br100',
+        'https://lh3.googleusercontent.com/a/ACg8ocIWiASjqZiJyAMLprZJw0_pEZY3Q2kCKjZRS2XrJNhb8LDkNw=w75-h75-p-rp-mo-br100',
       rating: 5,
       text: translations.about.reviews.review3.text,
-      link: 'https://maps.app.goo.gl/pPyeoB2uF9pHdRFz9',
+      link: 'https://maps.app.goo.gl/DxrTjw8ZuRPjYx2c9',
     },
   ]
 
@@ -86,11 +86,11 @@ export default async function AboutPage({
         {/* Stats Column */}
         <div className="relative lg:mt-32">
           {/* Mobile Stats: show on small screens */}
-          <div className="flex flex-col items-center justify-center gap-16 space-x-4 md:flex-row md:gap-12 lg:hidden">
+          <div className="flex flex-row flex-wrap items-center justify-center gap-10 space-x-4 md:flex-row md:gap-12 lg:hidden">
             {stats.map((stat) => (
               <div
                 key={stat.number}
-                className="ml-3 flex h-32 w-32 rotate-45 transform items-center justify-center rounded-2xl border-2 border-[var(--dark-gray)] bg-[var(--stone-gray)] shadow-md sm:h-28 sm:w-28"
+                className="sm:h-22 sm:w-22 ml-3 flex h-[7rem] w-[7rem] rotate-45 transform items-center justify-center rounded-2xl border-2 border-[var(--dark-gray)] bg-[var(--stone-gray)] shadow-md"
               >
                 <div className="flex -rotate-45 flex-col items-center">
                   <span className="text-center text-base font-bold text-[var(--black)]">
