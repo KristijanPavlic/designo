@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://foto-designo.com'),
   title: 'Foto & video DESIGNO',
   description:
-    'Professional photography and video services for your special moments',
+    'Foto & video DESIGNO offers photography and videography services in Croatia. Specializing in weddings, christening, cake smash/birthdays, and newborn photography, we capture every special moment with care and creativity',
   icons: [
     {
       url: '/favicon.ico',
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
     alternateLocale: 'hr_HR',
     title: 'Foto & video DESIGNO',
     description:
-      'Professional photography and video services for your special moments',
+      'Foto & video DESIGNO offers photography and videography services in Croatia. Specializing in weddings, christening, cake smash/birthdays, and newborn photography, we capture every special moment with care and creativity',
     siteName: 'Foto & video DESIGNO',
     url: 'https://foto-designo.com',
     images: [
@@ -162,7 +162,7 @@ export default async function NotFoundLayout({
               '@context': 'https://schema.org',
               '@type': 'LocalBusiness',
               name: 'Foto & video DESIGNO',
-              image: 'https://foto-designo.com/logo.jpg',
+              image: 'https://foto-designo.com/images/icon-512x512.png',
               '@id': 'https://foto-designo.com',
               url: 'https://foto-designo.com',
               telephone: '0989210905',

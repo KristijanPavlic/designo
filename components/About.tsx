@@ -61,12 +61,12 @@ export default async function AboutPage({
       className="container relative mx-auto scroll-m-24 px-4 pb-20 pt-10 lg:pb-32"
     >
       <BackgroundLines />
-      <h2 className="pt-10 pb-6 text-center text-2xl font-light">
+      <h2 className="pb-6 pt-10 text-center text-2xl font-light lg:hidden">
         {translations.navigation.about}
       </h2>
       <div className="grid items-center gap-20 lg:grid-cols-2">
         {/* Text Column */}
-        <div className="space-y-8 md:text-left text-center">
+        <div className="space-y-8 text-center md:text-left">
           {[
             translations.about.text1,
             translations.about.text2,
@@ -148,7 +148,7 @@ export default async function AboutPage({
                 height={64}
                 className="absolute -top-8 left-1/2 mx-auto mb-4 -translate-x-1/2 transform rounded-full border-8 border-[var(--white)]"
               />
-              <h3 className="text-md mb-2 mt-4 font-light">{review.name}</h3>
+              <h5 className="text-md mb-2 mt-4 font-light">{review.name}</h5>
               <div className="mb-6 flex justify-center space-x-1">
                 {[...Array(review.rating)].map((_, i) => (
                   <Star

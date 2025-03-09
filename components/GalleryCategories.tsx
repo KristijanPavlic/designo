@@ -240,7 +240,7 @@ export default function GalleryCategories({
         element = document.getElementById('gallery-preview')
       }
       if (element) {
-        const offset = window.innerWidth < 768 ? 0 : 200
+        const offset = window.innerWidth < 768 ? 350 : 200
         const rect = element.getBoundingClientRect()
         const offsetPosition = rect.top + window.pageYOffset - offset
         window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
@@ -389,14 +389,17 @@ export default function GalleryCategories({
   const renderMobileCategoryTextGrid = () => {
     return (
       <>
-        <h2 className={`${alexandria.className} pt-8 text-center font-sans text-2xl font-light`}>
+        <h2
+          className={`${alexandria.className} pt-8 text-center font-sans text-2xl font-light`}
+        >
           {translations.navigation.gallery}
         </h2>
         <div className="grid grid-cols-2 gap-4 pb-4 pt-12">
           {categories.map((category) => (
             <div
               key={category.id}
-              className="flex items-center justify-center rounded-md border p-2 hover:bg-[var(--light-gray)]"
+              className="flex items-center justify-center rounded-md border p-2 transition-all duration-300 ease-in-out hover:cursor-pointer hover:bg-[var(--light-gray)]"
+              onClick={() => handleCategoryClick(category.id)}
             >
               <motion.h2
                 className="cursor-pointer text-center text-xl font-light transition-colors duration-500 ease-in-out"
@@ -426,7 +429,6 @@ export default function GalleryCategories({
                         ? '#000000'
                         : '#8e8e8e',
                 }}
-                onClick={() => handleCategoryClick(category.id)}
               >
                 {category.name}
               </motion.h2>
