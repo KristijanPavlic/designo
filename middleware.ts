@@ -24,7 +24,12 @@ export default clerkMiddleware(async (auth, request) => {
 
   // --- Locale Redirection ---
   // Skip favicon requests.
-  if (pathname.includes('favicon.ico')) {
+  if (
+    pathname.includes('favicon.ico') ||
+    pathname.includes('apple-touch-icon.png') ||
+    pathname.includes('icon-192x192.png') ||
+    pathname.includes('icon-512x512.png')
+  ) {
     return NextResponse.next()
   }
 

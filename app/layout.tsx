@@ -37,20 +37,20 @@ export const metadata: Metadata = {
       type: 'image/ico',
     },
     {
-      url: '/apple-touch-icon.png',
-      href: '/apple-touch-icon.png',
+      url: '/images/apple-touch-icon.png',
+      href: '/images/apple-touch-icon.png',
       sizes: '180x180',
       type: 'apple-touch-icon',
     },
     {
-      url: '/icon-192x192.png',
-      href: '/icon-192x192.png',
+      url: '/images/icon-192x192.png',
+      href: '/images/icon-192x192.png',
       sizes: '192x192',
       type: 'image/png',
     },
     {
-      url: '/icon-512x512.png',
-      href: '/icon-512x512.png',
+      url: '/images/icon-512x512.png',
+      href: '/images/icon-512x512.png',
       sizes: '512x512',
       type: 'image/png',
     },
@@ -111,24 +111,24 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/favicon.ico',
-        width: 32,
-        height: 32,
+        width: 128,
+        height: 128,
         alt: 'DESIGNO Web Icon',
       },
       {
-        url: '/apple-touch-icon.png',
+        url: '/images/apple-touch-icon.png',
         width: 180,
         height: 180,
         alt: 'DESIGNO Web Apple Touch Icon',
       },
       {
-        url: '/icon-192x192.png',
+        url: '/images/icon-192x192.png',
         width: 192,
         height: 192,
         alt: 'DESIGNO Web Android Chrome 192x192',
       },
       {
-        url: '/icon-512x512.png',
+        url: '/images/icon-512x512.png',
         width: 512,
         height: 512,
         alt: 'DESIGNO Web Android Chrome 512x512',
@@ -138,7 +138,7 @@ export const metadata: Metadata = {
   category: 'photography',
 }
 
-export default async function RootLayout({
+export default async function NotFoundLayout({
   children,
   params,
 }: Readonly<{
