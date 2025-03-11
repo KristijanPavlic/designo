@@ -148,7 +148,9 @@ export default async function AboutPage({
                 height={64}
                 className="absolute -top-8 left-1/2 mx-auto mb-4 -translate-x-1/2 transform rounded-full border-8 border-[var(--white)]"
               />
-              <h5 className="text-md mb-2 mt-4 font-light">{review.name}</h5>
+              <div className="text-md mb-2 mt-4 font-light">
+                {review.name}
+              </div>
               <div className="mb-6 flex justify-center space-x-1">
                 {[...Array(review.rating)].map((_, i) => (
                   <Star

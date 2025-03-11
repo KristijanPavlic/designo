@@ -94,7 +94,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
           {/* Logo */}
           <div className="flex items-center lg:flex-1 lg:justify-center">
             <Link
-              href={`/${lang}`}
+              href={`/`}
               className="text-lg font-medium tracking-[5.7px] text-[var(--white)] lg:text-2xl lg:tracking-[7.7px]"
             >
               DESIGNO
