@@ -88,26 +88,39 @@ export default function MediaUploader({ translations }: MediaUploaderProps) {
     setIsUploading(true)
 
     try {
-      const formData = new FormData()
-      formData.append('folder', selectedCategory)
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
 
-      acceptedFiles.forEach((mediaFile) => {
-        formData.append('files', mediaFile.file)
-      })
-
-      const response = await fetch('api/upload', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error('Upload failed')
+      if (!cloudName || !uploadPreset) {
+        throw new Error('Cloudinary configuration missing')
       }
 
-      toast.success(translations.dashboard.uploadSuccess)
+      // Upload each accepted file directly to Cloudinary
+      const uploadPromises = acceptedFiles.map(async (mediaFile) => {
+        const formData = new FormData()
+        formData.append('file', mediaFile.file)
+        formData.append('upload_preset', uploadPreset)
+        formData.append('folder', selectedCategory)
 
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
+          {
+            method: 'POST',
+            body: formData,
+          }
+        )
+
+        if (!response.ok) {
+          throw new Error('Upload failed')
+        }
+        return response.json()
+      })
+
+      const results = await Promise.all(uploadPromises)
+      toast.success(translations.dashboard.uploadSuccess)
       // Clear accepted files after successful upload
       setMediaFiles((prev) => prev.filter((file) => file.status !== 'accepted'))
+      console.log('Upload results:', results)
     } catch (error) {
       console.error('Upload error:', error)
       toast.error(translations.dashboard.uploadError)
