@@ -117,7 +117,7 @@ export default async function Contact({
         alt="Camera"
         width={384}
         height={384}
-        className="absolute bottom-40 right-0 mx-auto h-72 w-72 lg:h-96 lg:w-96"
+        className="absolute z-[-999] bottom-40 right-0 mx-auto h-72 w-72 lg:h-96 lg:w-96"
       />
     </>
   )
