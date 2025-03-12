@@ -9,7 +9,8 @@ interface FileSelectorProps {
   translations: Translations
 }
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB in bytes
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
+const MAX_VIDEO_SIZE = 30 * 1024 * 1024 // 30MB
 
 export default function FileSelector({
   onFileChange,
@@ -21,9 +22,16 @@ export default function FileSelector({
     const files = e.target.files
     if (files) {
       const validFiles = Array.from(files).filter((file) => {
-        if (file.size > MAX_FILE_SIZE) {
-          toast.error(`${file.name} exceeds the 10MB size limit.`)
-          return false
+        if (file.type.startsWith('image/')) {
+          if (file.size > MAX_IMAGE_SIZE) {
+            toast.error(`${file.name} exceeds the 10MB image size limit.`)
+            return false
+          }
+        } else if (file.type.startsWith('video/')) {
+          if (file.size > MAX_VIDEO_SIZE) {
+            toast.error(`${file.name} exceeds the 30MB video size limit.`)
+            return false
+          }
         }
         return true
       })
