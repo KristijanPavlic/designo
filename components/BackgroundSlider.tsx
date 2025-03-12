@@ -1,90 +1,65 @@
 'use client'
 
 import { useLayoutEffect, useState, useCallback, useEffect } from 'react'
-import Image from 'next/image'
-import type { BackgroundImage } from '@/types/images'
+import Image, { StaticImageData } from 'next/image'
+
+// Define the new slide type with both desktop and mobile images.
+export interface BackgroundSlide {
+  desktop: StaticImageData
+  mobile?: StaticImageData
+  alt: string
+}
 
 interface BackgroundSliderProps {
-  images: BackgroundImage[]
+  slides: BackgroundSlide[]
   /** Breakpoint below which the mobile version is used */
   mobileBreakpoint?: number
 }
 
 export default function BackgroundSlider({
-  images,
+  slides,
   mobileBreakpoint = 768,
 }: BackgroundSliderProps) {
-  // Always call hooks in the same order.
   const [hasMounted, setHasMounted] = useState(false)
-  const [sliderImages, setSliderImages] = useState<BackgroundImage[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [nextIndex, setNextIndex] = useState<number | null>(null)
   const [animateNext, setAnimateNext] = useState(false)
-  const [firstImageLoaded, setFirstImageLoaded] = useState(false) // new spinner state
+  const [firstImageLoaded, setFirstImageLoaded] = useState(false) // spinner state
+  const [isMobile, setIsMobile] = useState(false)
 
-  // Set mounted flag after first render.
+  // Set mounted flag and initial mobile state on first render.
   useEffect(() => {
     setHasMounted(true)
-  }, [])
-
-  // Returns images in the correct order.
-  const getOrderedImages = useCallback((): BackgroundImage[] => {
     if (typeof window !== 'undefined') {
-      const isMobile = window.innerWidth < mobileBreakpoint
-      if (isMobile) {
-        return [images[1], images[2], images[3], images[5]].filter(Boolean)
-      } else {
-        return [images[0], images[2], images[3], images[4]].filter(Boolean)
-      }
+      setIsMobile(window.innerWidth < mobileBreakpoint)
     }
-    // Fallback for SSR (desktop order)
-    return [images[0], images[2], images[3], images[4]].filter(Boolean)
-  }, [images, mobileBreakpoint])
+  }, [mobileBreakpoint])
 
-  // Update slider images once mounted.
-  useEffect(() => {
-    if (hasMounted) {
-      const ordered = getOrderedImages()
-      setSliderImages(ordered)
-      setCurrentIndex(0)
-      setFirstImageLoaded(false) // reset spinner state on mount
-    }
-  }, [hasMounted, getOrderedImages])
-
-  // Handle window resize to recalc ordering.
+  // Listen for window resize events to update the mobile state.
   useLayoutEffect(() => {
-    const updateOnResize = () => {
-      const newImages = getOrderedImages()
-      const currentImage = sliderImages[currentIndex]
-      let newIndex = 0
-      if (currentImage) {
-        const idx = newImages.findIndex((img) => img.src === currentImage.src)
-        if (idx !== -1) newIndex = idx
-      }
-      setSliderImages(newImages)
-      setCurrentIndex(newIndex)
-      setNextIndex(null)
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < mobileBreakpoint)
     }
-    window.addEventListener('resize', updateOnResize)
-    return () => window.removeEventListener('resize', updateOnResize)
-  }, [getOrderedImages, sliderImages, currentIndex])
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [mobileBreakpoint])
 
   // --- Slider Transition Logic ---
   const triggerTransition = useCallback(() => {
-    if (sliderImages.length < 2) return
-    const upcomingIndex = (currentIndex + 1) % sliderImages.length
+    if (slides.length < 2) return
+    const upcomingIndex = (currentIndex + 1) % slides.length
     setNextIndex(upcomingIndex)
-  }, [currentIndex, sliderImages])
+  }, [currentIndex, slides.length])
 
   useEffect(() => {
-    if (sliderImages.length < 2) return
+    if (slides.length < 2) return
     const interval = setInterval(() => {
       if (nextIndex === null) {
         triggerTransition()
       }
     }, 4000)
     return () => clearInterval(interval)
-  }, [sliderImages, triggerTransition, nextIndex])
+  }, [slides.length, triggerTransition, nextIndex])
 
   useEffect(() => {
     if (nextIndex !== null) {
@@ -103,9 +78,16 @@ export default function BackgroundSlider({
     }
   }, [nextIndex])
 
-  // Until we've mounted and set the slider images, render nothing.
-  if (!hasMounted || sliderImages.length === 0) {
+  if (!hasMounted || slides.length === 0) {
     return null
+  }
+
+  // Helper function that returns the correct image src based on the viewport.
+  const getSlideSrc = (slide: BackgroundSlide) => {
+    if (isMobile && slide.mobile) {
+      return slide.mobile.src
+    }
+    return slide.desktop.src
   }
 
   return (
@@ -113,8 +95,8 @@ export default function BackgroundSlider({
       {/* Current image */}
       <div className="absolute inset-0">
         <Image
-          src={sliderImages[currentIndex].src || '/placeholder.svg'}
-          alt={sliderImages[currentIndex].alt}
+          src={getSlideSrc(slides[currentIndex]) || '/placeholder.svg'}
+          alt={slides[currentIndex].alt}
           fill
           style={{ objectFit: 'cover', filter: 'brightness(85%)' }}
           priority
@@ -126,7 +108,7 @@ export default function BackgroundSlider({
         />
       </div>
 
-      {/* Spinner overlay for first image */}
+      {/* Spinner overlay for the first image */}
       {currentIndex === 0 && !firstImageLoaded && (
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <div className="h-12 w-12 animate-spin rounded-full border-b-4 border-t-4 border-white"></div>
@@ -141,8 +123,8 @@ export default function BackgroundSlider({
           }`}
         >
           <Image
-            src={sliderImages[nextIndex].src || '/placeholder.svg'}
-            alt={sliderImages[nextIndex].alt}
+            src={getSlideSrc(slides[nextIndex]) || '/placeholder.svg'}
+            alt={slides[nextIndex].alt}
             fill
             style={{ objectFit: 'cover', filter: 'brightness(85%)' }}
             priority
