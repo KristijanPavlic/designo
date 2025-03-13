@@ -32,7 +32,7 @@ export default async function Contact({
   const socialNetworks = [
     {
       text: 'Instagram',
-      url: 'https://www.instagram.com/krumenjak_photography',
+      url: 'https://www.instagram.com/fotovideodesigno/',
     },
     {
       text: 'Facebook',
@@ -117,7 +117,7 @@ export default async function Contact({
         alt="Camera"
         width={384}
         height={384}
-        className="absolute z-[-999] bottom-40 right-0 mx-auto h-72 w-72 lg:h-96 lg:w-96"
+        className="absolute bottom-40 right-0 z-[-999] mx-auto h-72 w-72 lg:h-96 lg:w-96"
       />
     </>
   )
