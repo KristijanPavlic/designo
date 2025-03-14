@@ -59,7 +59,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
 
   const socialLinks = [
     {
-      href: 'https://www.instagram.com/krumenjak_photography',
+      href: 'https://www.instagram.com/fotovideodesigno/',
       label: translations.navigation.instagram,
     },
     {
