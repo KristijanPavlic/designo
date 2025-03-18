@@ -2,6 +2,7 @@
 
 import { Check, X, Maximize } from 'lucide-react'
 import type { MediaFile, MediaStatus } from '@/types/media'
+import Image from 'next/image'
 
 interface MediaItemProps {
   file: MediaFile
@@ -29,8 +30,9 @@ export default function MediaItem({
       onMouseLeave={onMouseLeave}
     >
       {file.type === 'image' ? (
-        <img
+        <Image
           src={file.preview || '/placeholder.svg'}
+          fill
           alt="Preview"
           className="h-full w-full object-cover"
         />

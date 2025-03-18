@@ -15,6 +15,7 @@ import newbornMobile from '../public/images/slider_mobile_newborn.jpg'
 import birthdaysDesktop from '../public/images/slider_desktop_birthdays.jpg'
 import birthdaysMobile from '../public/images/slider_mobile_birthdays.jpg'
 import { StaticImageData } from 'next/image'
+import { Translations } from '@/types/translations'
 
 // Define a type for each slide
 interface BackgroundSlide {
@@ -58,7 +59,7 @@ const frankRuhlLibre = Frank_Ruhl_Libre({
 })
 
 interface HeroClientProps {
-  translations: any // adjust type as needed
+  translations: Translations
   lang: string
 }
 
