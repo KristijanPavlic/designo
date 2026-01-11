@@ -93,7 +93,7 @@ export default function BackgroundSlider({
   }
 
   return (
-    <div className="absolute inset-0 top-[-5rem] max-h-svh min-h-full overflow-x-hidden lg:top-[-5.5rem]">
+    <div className="absolute inset-0 top-[-5rem] max-h-svh min-h-full overflow-x-hidden lg:top-[-5.5rem] select-none">
       {/* Current image */}
       <div className="absolute inset-0">
         <Image

@@ -84,7 +84,7 @@ export default async function AboutPage({
         </div>
 
         {/* Stats Column */}
-        <div className="relative lg:mt-32">
+        <div className="relative lg:mt-32 select-none">
           {/* Mobile Stats: show on small screens */}
           <div className="flex flex-row flex-wrap items-center justify-center gap-10 space-x-4 md:flex-row md:gap-12 lg:hidden">
             {stats.map((stat) => (
@@ -134,7 +134,7 @@ export default async function AboutPage({
       </div>
 
       {/* Reviews Section */}
-      <div className="mt-20">
+      <div className="mt-20 select-none">
         <div className="grid gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-3">
           {reviews.map((review) => (
             <div
@@ -159,9 +159,9 @@ export default async function AboutPage({
                   />
                 ))}
               </div>
-              <p className="mb-8 text-lg text-[var(--dark-gray)]">
+              <span className="block mb-8 text-lg text-[var(--dark-gray)] select-text">
                 {review.text}
-              </p>
+              </span>
               <Link
                 href={review.link}
                 target="_blank"

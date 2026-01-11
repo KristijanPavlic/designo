@@ -67,7 +67,7 @@ export default async function Contact({
           <div>
             <div className="space-y-10">
               <div>
-                <h4 className="mb-1 text-lg font-light text-[var(--gray)]">
+                <h4 className="mb-1 text-lg font-light text-[var(--gray)] select-none">
                   {translations.contact.form.email}
                 </h4>
                 <CopyToClipboard
@@ -80,7 +80,7 @@ export default async function Contact({
                 </CopyToClipboard>
               </div>
               <div>
-                <h4 className="mb-1 text-lg font-light text-[var(--gray)]">
+                <h4 className="mb-1 text-lg font-light text-[var(--gray)] select-none">
                   {translations.contact.phone}
                 </h4>
                 <Link
@@ -91,7 +91,7 @@ export default async function Contact({
                 </Link>
               </div>
               <div>
-                <h4 className="mb-1 text-lg font-light text-[var(--gray)]">
+                <h4 className="mb-1 text-lg font-light text-[var(--gray)] select-none">
                   {translations.contact.socialNetworks}
                 </h4>
                 <div className="flex gap-8">
@@ -117,7 +117,7 @@ export default async function Contact({
         alt="Camera"
         width={384}
         height={384}
-        className="absolute bottom-40 right-0 z-[-999] mx-auto h-72 w-72 lg:h-96 lg:w-96"
+        className="absolute bottom-40 right-0 z-[-999] mx-auto h-72 w-72 lg:h-96 lg:w-96 select-none"
       />
     </>
   )

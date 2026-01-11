@@ -55,13 +55,12 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
+    <form onSubmit={onSubmit} className="space-y-8 select-none">
       <div>
         <span className="text-md font-light text-[var(--dark-gray)]">
           {translations.name}
         </span>
         <input
-          placeholder={translations.namePlaceholder}
           {...register('name')}
           className="h-12 w-full rounded-md border border-[var(--stone-gray)] px-4 font-normal"
         />
@@ -76,7 +75,6 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
           {translations.email}
         </span>
         <input
-          placeholder={translations.emailPlaceholder}
           type="email"
           {...register('email')}
           className="h-12 w-full rounded-md border border-[var(--stone-gray)] px-4 font-normal"
@@ -92,7 +90,6 @@ export function ContactForm({ translations, lang }: ContactFormProps) {
           {translations.message}
         </span>
         <textarea
-          placeholder={translations.messagePlaceholder}
           {...register('message')}
           className="min-h-[120px] w-full resize-none rounded-md border border-[var(--stone-gray)] p-4 font-normal"
         />

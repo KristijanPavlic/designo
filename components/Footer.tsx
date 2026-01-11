@@ -13,7 +13,7 @@ export default async function Footer({
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-[var(--stone-gray)] font-light text-[var(--dark-gray)]">
+    <footer className="bg-[var(--stone-gray)] font-light text-[var(--dark-gray)] select-none">
       <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-4 text-sm md:flex-row md:text-base">
         <div className="flex flex-col items-center gap-2 md:flex-row md:gap-6">
           <span className="text-center md:text-start">

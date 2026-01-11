@@ -17,7 +17,7 @@ export default async function Dashboard({
   const translations: Translations = await getTranslations(lang)
 
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col select-none">
       <Navigation lang={lang} translations={translations} />
 
       {/* Vertical Lines Container */}

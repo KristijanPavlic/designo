@@ -66,22 +66,22 @@ export default function GalleryCategories({
   const [visibleCount, setVisibleCount] = useState(LIMIT)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // "hasMore" determines if there are still images hidden from view.
   const [hasMore, setHasMore] = useState(false)
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false)
   const [fullscreenIndex, setFullscreenIndex] = useState(0)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [resourceToDelete, setResourceToDelete] =
     useState<CloudinaryResource | null>(null)
-  // New state to track deletion progress.
   const [isDeleting, setIsDeleting] = useState(false)
 
-  // In‑memory cache: once images are fetched for a category they are cached until page reload.
+  // Track which images are loaded
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set())
+
+  // In‑memory cache
   const galleryCache = useRef<
     Record<Category, { images: CloudinaryResource[]; hasMore: boolean }>
   >({} as Record<Category, { images: CloudinaryResource[]; hasMore: boolean }>)
 
-  // Use a ref to capture the category being requested (to avoid race conditions)
   const selectedCategoryRef = useRef<Category | null>(null)
 
   const categories: CategoryData[] = [
@@ -114,11 +114,10 @@ export default function GalleryCategories({
     return categoryOrder[nextIndex]
   }
 
-  // Auto‑rotation for preview (only when no category is open)
   const startLoading = useCallback(() => {
-    if (openGalleryCategory) return // pause auto‑rotation if a category is open
+    if (openGalleryCategory) return
     const startTime = Date.now()
-    const duration = 4000 // 4 seconds
+    const duration = 4000
 
     const animateLoading = () => {
       const elapsed = Date.now() - startTime
@@ -131,7 +130,7 @@ export default function GalleryCategories({
         setActiveCategory(getNextCategory(activeCategory))
         setLoadingProgress(0)
         setCurrentImageIndex(0)
-        startLoading() // restart auto‑rotation
+        startLoading()
       }
     }
     animationFrameRef.current = requestAnimationFrame(animateLoading)
@@ -146,18 +145,16 @@ export default function GalleryCategories({
     }
   }, [startLoading])
 
-  // Scroll into view when a category is open.
   useEffect(() => {
     if (openGalleryCategory) {
       let element = document.getElementById(`gallery-${openGalleryCategory}`)
-      let offset = 200 // desktop offset
+      let offset = 200
       if (!element) {
         element = document.getElementById('mobile-gallery')
-        offset = 0 // no offset for mobile
+        offset = 0
       }
       if (element) {
         const rect = element.getBoundingClientRect()
-        // On mobile, only scroll if the element isn't fully visible.
         if (window.innerWidth < 768) {
           if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
             return
@@ -169,24 +166,24 @@ export default function GalleryCategories({
     }
   }, [openGalleryCategory])
 
-  // Handle category click – toggles gallery open state and fetches images if opening.
   const handleCategoryClick = async (category: Category) => {
     if (openGalleryCategory === category) {
-      // Close the gallery and scroll preview into view.
       handleCloseGallery()
     } else {
       setActiveCategory(category)
       setOpenGalleryCategory(category)
-      // Check cache first.
+      // Reset loaded images when opening a new category
+      setLoadedImages(new Set())
+      
       if (galleryCache.current[category]) {
         setGalleryResources(galleryCache.current[category].images)
         setHasMore(galleryCache.current[category].hasMore)
         setVisibleCount(LIMIT)
         return
       }
-      // No cache: fetch initial images
+      
       selectedCategoryRef.current = category
-      setGalleryResources([]) // clear previous images
+      setGalleryResources([])
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
       }
@@ -200,7 +197,6 @@ export default function GalleryCategories({
           if (result.success) {
             setGalleryResources(result.data)
             setVisibleCount(LIMIT)
-            // Determine if there are more images to show.
             const more = result.data.length > LIMIT
             setHasMore(more)
             galleryCache.current[category] = {
@@ -220,23 +216,20 @@ export default function GalleryCategories({
     }
   }
 
-  // Close gallery helper – resets the state and scrolls the preview container into view.
   const handleCloseGallery = () => {
     setOpenGalleryCategory(null)
     setGalleryResources([])
     setHasMore(false)
     setLoadingProgress(0)
     setCurrentImageIndex(0)
+    setLoadedImages(new Set())
     startLoading()
 
-    // Delay scrolling until the preview container is rendered.
     setTimeout(() => {
       let element: HTMLElement | null = null
       if (window.innerWidth < 768) {
-        // Mobile preview container (no offset)
         element = document.getElementById('mobile-preview')
       } else {
-        // Desktop preview container with an offset for sticky nav
         element = document.getElementById('gallery-preview')
       }
       if (element) {
@@ -248,7 +241,6 @@ export default function GalleryCategories({
     }, 100)
   }
 
-  // "View more" handler – reveals more images from the already fetched gallery.
   const handleViewMore = () => {
     if (!openGalleryCategory) return
     const newVisibleCount = Math.min(
@@ -259,7 +251,6 @@ export default function GalleryCategories({
     setHasMore(newVisibleCount < galleryResources.length)
   }
 
-  // Handlers for gallery modal and deletion.
   const handleViewImage = (index: number) => {
     setFullscreenIndex(index)
     setIsFullscreenOpen(true)
@@ -287,7 +278,6 @@ export default function GalleryCategories({
   const handleConfirmDelete = async () => {
     if (!resourceToDelete) return
 
-    // Set deletion in progress.
     setIsDeleting(true)
     try {
       const result = await deleteGalleryImage(
@@ -299,7 +289,6 @@ export default function GalleryCategories({
         setGalleryResources((prev) =>
           prev.filter((item) => item.public_id !== resourceToDelete.public_id)
         )
-        // Update cache as well.
         if (openGalleryCategory) {
           galleryCache.current[openGalleryCategory] = {
             images: galleryResources.filter(
@@ -321,6 +310,10 @@ export default function GalleryCategories({
     }
   }
 
+  const handleImageLoad = (publicId: string) => {
+    setLoadedImages((prev) => new Set(prev).add(publicId))
+  }
+
   const renderGalleryGrid = (resources: CloudinaryResource[]) => {
     return (
       <div className="mt-8 grid auto-rows-[300px] grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
@@ -331,6 +324,8 @@ export default function GalleryCategories({
               : index === 3
                 ? 'col-span-1 md:col-span-1 row-span-2'
                 : 'col-span-1 row-span-1'
+          const isLoaded = loadedImages.has(resource.public_id)
+          
           return (
             <div
               key={resource.public_id}
@@ -343,15 +338,24 @@ export default function GalleryCategories({
                   className="h-full w-full cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
                   muted
                   playsInline
+                  onLoadedData={() => handleImageLoad(resource.public_id)}
                 />
               ) : (
                 <div className="relative h-full w-full">
+                  {!isLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                      <Spinner size="sm" />
+                    </div>
+                  )}
                   <Image
                     src={resource.secure_url || '/placeholder.svg'}
                     alt=""
                     fill
-                    className="cursor-pointer object-cover transition-transform duration-300 group-hover:scale-105"
+                    className={`cursor-pointer object-cover transition-all duration-300 group-hover:scale-105 ${
+                      isLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    onLoad={() => handleImageLoad(resource.public_id)}
                   />
                 </div>
               )}
@@ -385,7 +389,6 @@ export default function GalleryCategories({
     )
   }
 
-  // Mobile layout: render category texts in a 2×2 grid only.
   const renderMobileCategoryTextGrid = () => {
     return (
       <>
@@ -442,7 +445,7 @@ export default function GalleryCategories({
   return (
     <>
       {/* Large Screen Layout */}
-      <div className="mx-auto hidden w-full max-w-[1920px] space-y-16 py-12 lg:block">
+      <div className="mx-auto hidden w-full max-w-[1920px] space-y-16 py-12 lg:block select-none">
         <div
           className={`flex items-start justify-between transition-all duration-500 ${
             openGalleryCategory

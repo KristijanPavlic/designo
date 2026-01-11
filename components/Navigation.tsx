@@ -71,7 +71,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
   return (
     // Header is set to z-50 so it always stays on top
     <header
-      className={`sticky left-0 right-0 top-0 z-50 transform transition-transform duration-700 ${
+      className={`sticky left-0 right-0 top-0 z-50 transform transition-transform duration-700 select-none ${
         animateNav ? 'translate-y-0' : '-translate-y-full'
       }`}
     >

@@ -74,7 +74,7 @@ export default function HeroClient({ translations, lang }: HeroClientProps) {
 
         {/* Skeleton loading overlay until background images are loaded */}
         {!heroLoaded && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black select-none">
             {/* Pulsing skeleton background */}
             <div className="absolute inset-0 animate-pulse bg-gray-700" />
             {/* Centered spinner */}
@@ -84,7 +84,7 @@ export default function HeroClient({ translations, lang }: HeroClientProps) {
           </div>
         )}
 
-        <div className="relative overflow-hidden pb-28 text-center lg:text-left">
+        <div className="relative overflow-hidden pb-28 text-center lg:text-left select-none">
           {heroLoaded && (
             <div className="animate-fadeInUp container mx-auto min-h-[60svh] px-4">
               <h1

@@ -1,6 +1,8 @@
 import type React from 'react'
 import type { Metadata, Viewport } from 'next'
 import { Alexandria } from 'next/font/google'
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import './[lang]/globals.css'
 
 const alexandria = Alexandria({
@@ -120,25 +122,25 @@ export const metadata: Metadata = {
         url: '/favicon.ico',
         width: 128,
         height: 128,
-        alt: 'DESIGNO Web Icon',
+        alt: 'Foto&video Designo Web Icon',
       },
       {
         url: '/images/apple-touch-icon.png',
         width: 180,
         height: 180,
-        alt: 'DESIGNO Web Apple Touch Icon',
+        alt: 'Foto&video Designo Web Apple Touch Icon',
       },
       {
         url: '/images/icon-192x192.png',
         width: 192,
         height: 192,
-        alt: 'DESIGNO Web Android Chrome 192x192',
+        alt: 'Foto&video Designo Web Android Chrome 192x192',
       },
       {
         url: '/images/icon-512x512.png',
         width: 512,
         height: 512,
-        alt: 'DESIGNO Web Android Chrome 512x512',
+        alt: 'Foto&video Designo Web Android Chrome 512x512',
       },
     ],
   },
@@ -169,6 +171,8 @@ export default async function NotFoundLayout({
       >
         <div>{children}</div>
       </body>
+      <Analytics/>
+      <SpeedInsights/>
     </html>
   )
 }

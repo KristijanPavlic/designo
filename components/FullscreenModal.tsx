@@ -2,7 +2,7 @@
 
 import type React from 'react'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Check,
   X,
@@ -24,6 +24,12 @@ interface FullscreenModalProps {
   activeTab: MediaStatus
 }
 
+const Spinner = () => (
+  <div className="flex items-center justify-center">
+    <div className="h-12 w-12 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+  </div>
+)
+
 export default function FullscreenModal({
   media,
   onClose,
@@ -35,6 +41,13 @@ export default function FullscreenModal({
   activeTab,
 }: FullscreenModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+
+  useEffect(() => {
+    setIsImageLoaded(false)
+    setIsVideoLoaded(false)
+  }, [media.id])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -59,7 +72,7 @@ export default function FullscreenModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 select-none"
       onClick={handleBackdropClick}
     >
       {/* Updated container: using full height and width */}
@@ -74,20 +87,40 @@ export default function FullscreenModal({
 
         {media.type === 'image' ? (
           <div className="relative h-full w-full">
+            {/* Loading spinner for images */}
+            {!isImageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Spinner />
+              </div>
+            )}
             <Image
               src={media.preview || '/placeholder.svg'}
               alt="Fullscreen preview"
               fill
-              className="object-contain"
+              className={`object-contain transition-opacity duration-300 ${
+                isImageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setIsImageLoaded(true)}
             />
           </div>
         ) : (
-          <video
-            src={media.preview}
-            className="h-full w-full"
-            controls
-            autoPlay
-          />
+          <div className="relative h-full w-full">
+            {/* Loading spinner for videos */}
+            {!isVideoLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Spinner />
+              </div>
+            )}
+            <video
+              src={media.preview}
+              className={`h-full w-full transition-opacity duration-300 ${
+                isVideoLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              controls
+              autoPlay
+              onLoadedData={() => setIsVideoLoaded(true)}
+            />
+          </div>
         )}
 
         <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 transform space-x-4">
