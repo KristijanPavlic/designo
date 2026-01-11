@@ -1,13 +1,13 @@
 {
     "short_name": "DESIGNO",
-    "name": "Foto & video DESIGNO",
+    "name": "Foto&video Designo",
     "description": "Professional photography and video services for your special moments.",
     "lang": "en",
     "dir": "ltr",
     "locales": {
         "hr": {
             "short_name": "DESIGNO",
-            "name": "Foto & video DESIGNO",
+            "name": "Foto&video Designo",
             "description": "Profesionalne fotografske i video usluge za vaše posebne trenutke."
         }
     },

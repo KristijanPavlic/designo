@@ -26,9 +26,9 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://foto-designo.com'),
-  title: 'Foto & video DESIGNO',
+  title: 'Foto&video Designo',
   description:
-    'Foto & Video DESIGNO offers creative photography and videography in Croatia, specializing in weddings, christenings, birthdays, newborns, and cake smash.',
+    'Foto&video Designo offers creative photography and videography in Croatia, specializing in weddings, christenings, birthdays, newborns, and cake smash.',
   icons: [
     {
       url: '/favicon.ico',
@@ -93,7 +93,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Kristijan Pavlic', url: 'https://kripaweb.com/' }],
   creator: 'KriPa Web',
-  publisher: 'Foto & video DESIGNO',
+  publisher: 'Foto&video Designo',
   formatDetection: {
     email: true,
     address: true,
@@ -110,10 +110,10 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     alternateLocale: 'hr_HR',
-    title: 'Foto & video DESIGNO',
+    title: 'Foto&video Designo',
     description:
-      'Foto & Video DESIGNO offers creative photography and videography in Croatia, specializing in weddings, christenings, birthdays, newborns, and cake smash.',
-    siteName: 'Foto & video DESIGNO',
+      'Foto&video Designo offers creative photography and videography in Croatia, specializing in weddings, christenings, birthdays, newborns, and cake smash.',
+    siteName: 'Foto&video Designo',
     url: 'https://foto-designo.com',
     images: [
       {
