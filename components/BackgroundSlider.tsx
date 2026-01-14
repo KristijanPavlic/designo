@@ -18,8 +18,6 @@ interface BackgroundSliderProps {
   onLoad?: () => void
   /** Transition duration between slides in ms */
   transitionDuration?: number
-  /** Interval between slide changes in ms */
-  slideInterval?: number
 }
 
 export default function BackgroundSlider({
@@ -27,7 +25,6 @@ export default function BackgroundSlider({
   mobileBreakpoint = 768,
   onLoad,
   transitionDuration = 800, // Reduced from 1200ms for faster feel
-  slideInterval = 2500, // Reduced from 3000ms for more dynamic feel
 }: BackgroundSliderProps) {
   const [hasMounted, setHasMounted] = useState(false)
   const [shuffledSlides, setShuffledSlides] = useState<BackgroundSlide[]>([])
@@ -37,6 +34,8 @@ export default function BackgroundSlider({
   const [isMobile, setIsMobile] = useState(false)
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set())
   const [shownIndices, setShownIndices] = useState<Set<number>>(new Set([0])) // Track shown slides, start with first
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set()) // Track loaded images
+  const [currentImageLoadTime, setCurrentImageLoadTime] = useState<number | null>(null) // Track when current image loaded
   
   const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const transitionTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
@@ -114,6 +113,11 @@ export default function BackgroundSlider({
   const triggerTransition = useCallback(() => {
     if (shuffledSlides.length < 2) return
     
+    // Clear any existing interval when starting transition
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+    }
+    
     let upcomingIndex: number
     
     // If we've shown all images, reset and start over
@@ -133,7 +137,7 @@ export default function BackgroundSlider({
     setNextIndex(upcomingIndex)
   }, [currentIndex, shuffledSlides.length, shownIndices])
 
-  // Auto-advance slides with dynamic timing
+  // Auto-advance slides - start timer only after image is loaded and transition complete
   useEffect(() => {
     if (shuffledSlides.length < 2) return
     
@@ -142,24 +146,24 @@ export default function BackgroundSlider({
       clearInterval(intervalRef.current)
     }
     
-    const startInterval = () => {
-      intervalRef.current = setInterval(() => {
-        if (nextIndex === null) {
-          triggerTransition()
-        }
-      }, slideInterval)
+    // Only start timer if current image is loaded and we're not in transition
+    if (loadedImages.has(currentIndex) && nextIndex === null) {
+      // Start timer immediately if image was already loaded, or when image loads
+      const startTime = currentImageLoadTime || Date.now()
+      const elapsed = Date.now() - startTime
+      const remainingTime = Math.max(3000 - elapsed, 0) // Ensure at least 3 seconds from load time
+      
+      intervalRef.current = setTimeout(() => {
+        triggerTransition()
+      }, remainingTime)
     }
-    
-    // Start interval after a brief delay to let images load
-    const delayTimeout = setTimeout(startInterval, 1000)
     
     return () => {
-      clearTimeout(delayTimeout)
       if (intervalRef.current) {
-        clearInterval(intervalRef.current)
+        clearTimeout(intervalRef.current)
       }
     }
-  }, [shuffledSlides.length, triggerTransition, nextIndex, slideInterval])
+  }, [shuffledSlides.length, triggerTransition, nextIndex, loadedImages, currentIndex, currentImageLoadTime])
 
   // Handle transition animation
   useEffect(() => {
@@ -171,6 +175,10 @@ export default function BackgroundSlider({
       const finishTimer = setTimeout(() => {
         setCurrentIndex(nextIndex)
         setShownIndices(prev => new Set(prev).add(nextIndex)) // Track the newly shown image
+        
+        // Reset current image load time - will be set when image loads
+        setCurrentImageLoadTime(null)
+        
         setNextIndex(null)
         setAnimateNext(false)
       }, transitionDuration)
@@ -186,15 +194,26 @@ export default function BackgroundSlider({
 
   // Handle image loading and errors
   const handleImageLoad = useCallback((index: number) => {
+    const loadTime = Date.now()
+    
+    setLoadedImages(prev => new Set(prev).add(index))
+    
+    // If this is the current image, record when it loaded
+    if (index === currentIndex) {
+      setCurrentImageLoadTime(loadTime)
+    }
+    
     // Call onLoad immediately for static images - don't wait for loading
     if (index === 0 && onLoad) {
       onLoad() 
     }
-  }, [onLoad])
+  }, [onLoad, currentIndex])
 
   // Reset shown indices when slides change (new dynamic images added)
   useEffect(() => {
     setShownIndices(new Set([currentIndex])) // Reset tracking when slides change
+    setLoadedImages(new Set()) // Reset loaded images tracking
+    setCurrentImageLoadTime(null) // Reset load time
   }, [shuffledSlides.length, currentIndex])
 
   // Call onLoad immediately on mount for static slides - no waiting

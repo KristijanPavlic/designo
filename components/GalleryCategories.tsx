@@ -108,12 +108,7 @@ export default function GalleryCategories({
   ]
 
   const categoryOrder = categories.map((cat) => cat.id)
-  const getNextCategory = (current: Category): Category => {
-    const currentIndex = categoryOrder.indexOf(current)
-    const nextIndex = (currentIndex + 1) % categoryOrder.length
-    return categoryOrder[nextIndex]
-  }
-
+  
   const startLoading = useCallback(() => {
     if (openGalleryCategory) return
     const startTime = Date.now()
@@ -141,10 +136,12 @@ export default function GalleryCategories({
   useEffect(() => {
     startLoading()
     return () => {
-      if (animationFrameRef.current)
-        cancelAnimationFrame(animationFrameRef.current)
+      const animationFrame = animationFrameRef.current
       const interval = intervalRef.current
-      if (interval) clearInterval(interval)
+      if (animationFrame)
+        cancelAnimationFrame(animationFrame)
+      if (interval)
+        clearInterval(interval)
     }
   }, [startLoading])
 

@@ -129,6 +129,30 @@ export default function HeroClient({ translations, lang }: HeroClientProps) {
     if (hasStartedFetch.current) return
     hasStartedFetch.current = true
 
+    // Background function to load more images very gradually
+    const loadMoreImages = async () => {
+      try {
+        const result = await fetchAllCategoryImages(1) // Only 1 image per category
+        
+        if (result.success) {
+          const { horizontal, portrait } = result.data
+          const selectedImages = isMobile ? portrait : horizontal
+          
+          if (selectedImages.length > 0) {
+            // Add only 2-3 more images gradually
+            const additionalSlides = createDynamicSlides(selectedImages.slice(0, 3), isMobile)
+            setSlides(prevSlides => {
+              const combined = [...prevSlides, ...additionalSlides]
+              // Keep total slides conservative to maintain performance
+              return combined.slice(0, 12)
+            })
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load additional images:', error)
+      }
+    }
+
     const loadDynamicImages = async () => {
       // Give plenty of time for static slides to render and be visible first
       await new Promise(resolve => setTimeout(resolve, 3000)) // 3 seconds delay
@@ -170,30 +194,6 @@ export default function HeroClient({ translations, lang }: HeroClientProps) {
 
     loadDynamicImages()
   }, [isMobile])
-
-  // Background function to load more images very gradually
-  const loadMoreImages = async () => {
-    try {
-      const result = await fetchAllCategoryImages(1) // Only 1 image per category
-      
-      if (result.success) {
-        const { horizontal, portrait } = result.data
-        const selectedImages = isMobile ? portrait : horizontal
-        
-        if (selectedImages.length > 0) {
-          // Add only 2-3 more images gradually
-          const additionalSlides = createDynamicSlides(selectedImages.slice(0, 3), isMobile)
-          setSlides(prevSlides => {
-            const combined = [...prevSlides, ...additionalSlides]
-            // Keep total slides conservative to maintain performance
-            return combined.slice(0, 12)
-          })
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load additional images:', error)
-    }
-  }
 
   return (
     <>
