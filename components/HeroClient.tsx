@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Frank_Ruhl_Libre } from 'next/font/google'
 import { Navigation } from './Navigation'
 import ScrollBtn from '@/components/ScrollBtn'
@@ -74,40 +74,6 @@ const createDynamicSlides = (resources: CloudinaryResource[], isMobile: boolean)
   })
 }
 
-// Function to mix static and dynamic slides with better distribution
-const mixSlides = (staticSlides: BackgroundSlide[], dynamicSlides: BackgroundSlide[]): BackgroundSlide[] => {
-  const mixed: BackgroundSlide[] = []
-  const maxStatic = staticSlides.length
-  const maxDynamic = dynamicSlides.length
-  const totalSlides = maxStatic + maxDynamic
-  
-  // Always start with first static slide for consistency
-  mixed.push(staticSlides[0])
-  
-  let staticIndex = 1
-  let dynamicIndex = 0
-  
-  for (let i = 1; i < totalSlides && mixed.length < 24; i++) { // Limit to 24 total slides
-    // Alternate between static and dynamic, but favor dynamic after initial static slides
-    if (i % 3 === 0 && staticIndex < maxStatic) {
-      mixed.push(staticSlides[staticIndex])
-      staticIndex++
-    } else if (dynamicIndex < maxDynamic) {
-      mixed.push(dynamicSlides[dynamicIndex])
-      dynamicIndex++
-    } else if (staticIndex < maxStatic) {
-      mixed.push(staticSlides[staticIndex])
-      staticIndex++
-    }
-  }
-  
-  return mixed
-}
-
-// Cache for dynamic images to avoid refetching
-const imageCache = new Map<string, { horizontal: CloudinaryResource[]; portrait: CloudinaryResource[]; timestamp: number }>()
-const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
-
 const frankRuhlLibre = Frank_Ruhl_Libre({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
@@ -127,7 +93,6 @@ export default function HeroClient({ translations, lang }: HeroClientProps) {
   const [heroLoaded, setHeroLoaded] = useState(true) // Start as true - no loading spinner
   const [slides, setSlides] = useState<BackgroundSlide[]>(staticSlides) // Start with static slides
   const [isMobile, setIsMobile] = useState(false)
-  const [isLoadingDynamic, setIsLoadingDynamic] = useState(false)
   const [dynamicError, setDynamicError] = useState<string | null>(null)
   
   const hasStartedFetch = useRef(false)
@@ -168,7 +133,7 @@ export default function HeroClient({ translations, lang }: HeroClientProps) {
       // Give plenty of time for static slides to render and be visible first
       await new Promise(resolve => setTimeout(resolve, 3000)) // 3 seconds delay
       
-      setIsLoadingDynamic(true)
+
       
       try {
         // Fetch just 1 image per category for speed
@@ -200,8 +165,6 @@ export default function HeroClient({ translations, lang }: HeroClientProps) {
       } catch (error) {
         console.error('Failed to fetch dynamic images:', error)
         setDynamicError('Network error loading gallery images')
-      } finally {
-        setIsLoadingDynamic(false)
       }
     }
 

@@ -127,21 +127,24 @@ export default function GalleryCategories({
       if (progress < 1) {
         animationFrameRef.current = requestAnimationFrame(animateLoading)
       } else {
-        setActiveCategory(getNextCategory(activeCategory))
+        const currentIndex = categoryOrder.indexOf(activeCategory)        
+        const nextIndex = (currentIndex + 1) % categoryOrder.length
+        setActiveCategory(categoryOrder[nextIndex])
         setLoadingProgress(0)
         setCurrentImageIndex(0)
         startLoading()
       }
     }
     animationFrameRef.current = requestAnimationFrame(animateLoading)
-  }, [activeCategory, openGalleryCategory])
+  }, [activeCategory, openGalleryCategory, categoryOrder])
 
   useEffect(() => {
     startLoading()
     return () => {
       if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current)
-      if (intervalRef.current) clearInterval(intervalRef.current)
+      const interval = intervalRef.current
+      if (interval) clearInterval(interval)
     }
   }, [startLoading])
 

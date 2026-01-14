@@ -36,7 +36,6 @@ export default function BackgroundSlider({
   const [animateNext, setAnimateNext] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set())
-  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set())
   const [shownIndices, setShownIndices] = useState<Set<number>>(new Set([0])) // Track shown slides, start with first
   
   const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
@@ -70,7 +69,6 @@ export default function BackgroundSlider({
     setNextIndex(null)
     setAnimateNext(false)
     setImageErrors(new Set())
-    setLoadedImages(new Set())
   }, [slides, shuffleArray])
 
   // Set mounted flag and initial mobile state on first render.
@@ -188,7 +186,6 @@ export default function BackgroundSlider({
 
   // Handle image loading and errors
   const handleImageLoad = useCallback((index: number) => {
-    setLoadedImages(prev => new Set(prev).add(index))
     // Call onLoad immediately for static images - don't wait for loading
     if (index === 0 && onLoad) {
       onLoad() 
