@@ -75,7 +75,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
         animateNav ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <nav className="bg-[var(--light-black)] py-3 backdrop-blur-lg">
+      <nav className="bg-[var(--light-black)] py-2 backdrop-blur-lg">
         <div className="container mx-auto flex justify-between px-4">
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:flex-1 lg:items-center lg:gap-8">
@@ -84,7 +84,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
                 key={route.section + index + 'desktop 1'}
                 id={route.section + index + 'desktop 1'}
                 scrollTo={route.section}
-                className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] antialiased transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-[var(--white)] lg:text-2xl`}
+                className={`${frankRuhlLibre.className} text-lg font-light text-[var(--stone-gray)] antialiased transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-[var(--white)] lg:text-xl`}
                 text={route.label}
                 underline={false}
               />
@@ -95,10 +95,10 @@ export function Navigation({ lang, translations }: NavigationProps) {
           <div className="flex items-center lg:flex-1 lg:justify-center">
             <Link
               href={`/`}
-              className="text-lg font-medium tracking-[5.7px] text-[var(--white)] lg:text-2xl lg:tracking-[7.7px]"
+              className="text-lg font-medium tracking-[5.7px] text-[var(--white)] lg:text-xl lg:tracking-[6.5px]"
             >
               DESIGNO
-              <span className="flex text-lg font-extralight tracking-tight lg:text-2xl">
+              <span className="flex text-base font-extralight tracking-tight lg:text-lg">
                 FOTO & VIDEO
               </span>
             </Link>
@@ -110,7 +110,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
               <Link
                 key={link.href + index + 'desktop 2'}
                 href={link.href}
-                className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] antialiased transition-colors hover:text-[var(--white)] lg:text-2xl`}
+                className={`${frankRuhlLibre.className} text-lg font-light text-[var(--stone-gray)] antialiased transition-colors hover:text-[var(--white)] lg:text-xl`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -123,9 +123,9 @@ export function Navigation({ lang, translations }: NavigationProps) {
                 window.location.href = window.location.href.replace(
                   `/${lang}`,
                   `/${newLang}`
-                )
+                )  
               }}
-              className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-2xl`}
+              className={`${frankRuhlLibre.className} text-lg font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-xl`}
             >
               {lang === 'hr' ? 'EN' : 'HR'}
             </button>
@@ -136,7 +136,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
             <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
               <SheetTrigger className="text-[var(--stone-gray)] hover:text-[var(--white)]">
                 <span
-                  className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-2xl`}
+                  className={`${frankRuhlLibre.className} text-lg font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-xl`}
                 >
                   {isOpen
                     ? translations.navigation.close
@@ -157,7 +157,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
                       key={route.section + index + 'mobile 1'}
                       id={route.section + index + 'mobile 1'}
                       scrollTo={route.section}
-                      className={`${frankRuhlLibre.className} py-2 text-xl font-light text-[var(--stone-gray)] transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-[var(--white)]`}
+                      className={`${frankRuhlLibre.className} py-2 text-lg font-light text-[var(--stone-gray)] transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-[var(--white)]`}
                       text={route.label}
                       underline={false}
                       onclick={() => setIsOpen(false)}
@@ -169,7 +169,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
                     <Link
                       key={link.href + index + 'mobile 2'}
                       href={link.href}
-                      className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)]`}
+                      className={`${frankRuhlLibre.className} text-lg font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)]`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setIsOpen(false)}
@@ -188,7 +188,7 @@ export function Navigation({ lang, translations }: NavigationProps) {
                   `/${newLang}`
                 )
               }}
-              className={`${frankRuhlLibre.className} text-xl font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-2xl`}
+              className={`${frankRuhlLibre.className} text-lg font-light text-[var(--stone-gray)] transition-colors hover:text-[var(--white)] lg:text-xl`}
             >
               {lang === 'hr' ? 'EN' : 'HR'}
             </button>

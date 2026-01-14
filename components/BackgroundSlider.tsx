@@ -1,12 +1,12 @@
 'use client'
 
-import { useLayoutEffect, useState, useCallback, useEffect } from 'react'
+import { useLayoutEffect, useState, useCallback, useEffect, useRef } from 'react'
 import Image, { StaticImageData } from 'next/image'
 
 // Define the new slide type with both desktop and mobile images.
 export interface BackgroundSlide {
-  desktop: StaticImageData
-  mobile?: StaticImageData
+  desktop: StaticImageData | string
+  mobile?: StaticImageData | string
   alt: string
 }
 
@@ -16,18 +16,62 @@ interface BackgroundSliderProps {
   mobileBreakpoint?: number
   /** Optional callback fired when the first background image is loaded */
   onLoad?: () => void
+  /** Transition duration between slides in ms */
+  transitionDuration?: number
+  /** Interval between slide changes in ms */
+  slideInterval?: number
 }
 
 export default function BackgroundSlider({
   slides,
   mobileBreakpoint = 768,
   onLoad,
+  transitionDuration = 800, // Reduced from 1200ms for faster feel
+  slideInterval = 2500, // Reduced from 3000ms for more dynamic feel
 }: BackgroundSliderProps) {
   const [hasMounted, setHasMounted] = useState(false)
+  const [shuffledSlides, setShuffledSlides] = useState<BackgroundSlide[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [nextIndex, setNextIndex] = useState<number | null>(null)
   const [animateNext, setAnimateNext] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set())
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set())
+  const [shownIndices, setShownIndices] = useState<Set<number>>(new Set([0])) // Track shown slides, start with first
+  
+  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
+  const transitionTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
+
+  // Shuffle array function
+  const shuffleArray = useCallback(<T,>(array: T[]): T[] => {
+    const shuffled = [...array]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+  }, [])
+
+  // Shuffle slides when they change and set random starting index
+  useEffect(() => {
+    if (slides.length === 0) {
+      setShuffledSlides([])
+      return
+    }
+
+    const newShuffledSlides = shuffleArray(slides)
+    setShuffledSlides(newShuffledSlides)
+    
+    // Set random starting index
+    const randomStartIndex = Math.floor(Math.random() * newShuffledSlides.length)
+    setCurrentIndex(randomStartIndex)
+    
+    // Reset other states
+    setNextIndex(null)
+    setAnimateNext(false)
+    setImageErrors(new Set())
+    setLoadedImages(new Set())
+  }, [slides, shuffleArray])
 
   // Set mounted flag and initial mobile state on first render.
   useEffect(() => {
@@ -36,6 +80,28 @@ export default function BackgroundSlider({
       setIsMobile(window.innerWidth < mobileBreakpoint)
     }
   }, [mobileBreakpoint])
+
+  // Simplified preloading - just preload the next image
+  const preloadNextImage = useCallback(() => {
+    if (shuffledSlides.length < 2) return
+    
+    const nextIndex = (currentIndex + 1) % shuffledSlides.length
+    const slide = shuffledSlides[nextIndex]
+    if (!slide) return
+    
+    const img = new window.Image()
+    const src = isMobile && slide.mobile 
+      ? (typeof slide.mobile === 'string' ? slide.mobile : slide.mobile.src)
+      : (typeof slide.desktop === 'string' ? slide.desktop : slide.desktop.src)
+    
+    img.src = src // Just preload, don't track state to avoid loops
+  }, [currentIndex, shuffledSlides, isMobile])
+  
+  // Preload next image when current index changes
+  useEffect(() => {
+    const timeoutId = setTimeout(preloadNextImage, 500)
+    return () => clearTimeout(timeoutId)
+  }, [currentIndex, preloadNextImage])
 
   // Listen for window resize events to update the mobile state.
   useLayoutEffect(() => {
@@ -46,82 +112,189 @@ export default function BackgroundSlider({
     return () => window.removeEventListener('resize', handleResize)
   }, [mobileBreakpoint])
 
-  // --- Slider Transition Logic ---
+  // --- Slider Transition Logic with No-Repeat Guarantee ---
   const triggerTransition = useCallback(() => {
-    if (slides.length < 2) return
-    const upcomingIndex = (currentIndex + 1) % slides.length
-    setNextIndex(upcomingIndex)
-  }, [currentIndex, slides.length])
-
-  useEffect(() => {
-    if (slides.length < 2) return
-    const interval = setInterval(() => {
-      if (nextIndex === null) {
-        triggerTransition()
+    if (shuffledSlides.length < 2) return
+    
+    let upcomingIndex: number
+    
+    // If we've shown all images, reset and start over
+    if (shownIndices.size >= shuffledSlides.length) {
+      setShownIndices(new Set([currentIndex])) // Reset with current image
+      upcomingIndex = (currentIndex + 1) % shuffledSlides.length
+    } else {
+      // Find next unshown image
+      upcomingIndex = (currentIndex + 1) % shuffledSlides.length
+      
+      // Keep looking for an unshown image
+      while (shownIndices.has(upcomingIndex) && shownIndices.size < shuffledSlides.length) {
+        upcomingIndex = (upcomingIndex + 1) % shuffledSlides.length
       }
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [slides.length, triggerTransition, nextIndex])
+    }
+    
+    setNextIndex(upcomingIndex)
+  }, [currentIndex, shuffledSlides.length, shownIndices])
 
+  // Auto-advance slides with dynamic timing
+  useEffect(() => {
+    if (shuffledSlides.length < 2) return
+    
+    // Clear any existing interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+    }
+    
+    const startInterval = () => {
+      intervalRef.current = setInterval(() => {
+        if (nextIndex === null) {
+          triggerTransition()
+        }
+      }, slideInterval)
+    }
+    
+    // Start interval after a brief delay to let images load
+    const delayTimeout = setTimeout(startInterval, 1000)
+    
+    return () => {
+      clearTimeout(delayTimeout)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [shuffledSlides.length, triggerTransition, nextIndex, slideInterval])
+
+  // Handle transition animation
   useEffect(() => {
     if (nextIndex !== null) {
       const startTimer = setTimeout(() => {
         setAnimateNext(true)
       }, 100)
+      
       const finishTimer = setTimeout(() => {
         setCurrentIndex(nextIndex)
+        setShownIndices(prev => new Set(prev).add(nextIndex)) // Track the newly shown image
         setNextIndex(null)
         setAnimateNext(false)
-      }, 1050)
+      }, transitionDuration)
+      
+      transitionTimeoutRef.current = finishTimer
+      
       return () => {
         clearTimeout(startTimer)
         clearTimeout(finishTimer)
       }
     }
-  }, [nextIndex])
+  }, [nextIndex, transitionDuration])
 
-  if (!hasMounted || slides.length === 0) {
+  // Handle image loading and errors
+  const handleImageLoad = useCallback((index: number) => {
+    setLoadedImages(prev => new Set(prev).add(index))
+    // Call onLoad immediately for static images - don't wait for loading
+    if (index === 0 && onLoad) {
+      onLoad() 
+    }
+  }, [onLoad])
+
+  // Reset shown indices when slides change (new dynamic images added)
+  useEffect(() => {
+    setShownIndices(new Set([currentIndex])) // Reset tracking when slides change
+  }, [shuffledSlides.length, currentIndex])
+
+  // Call onLoad immediately on mount for static slides - no waiting
+  useEffect(() => {
+    if (onLoad && shuffledSlides.length > 0) {
+      onLoad()
+    }
+  }, [onLoad, shuffledSlides.length])
+  
+  const handleImageError = useCallback((index: number) => {
+    console.warn(`Failed to load slide image at index ${index}`)
+    setImageErrors(prev => new Set(prev).add(index))
+  }, [])
+
+  // Clean up timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  if (!hasMounted || shuffledSlides.length === 0) {
     return null
   }
 
   // Helper function that returns the correct image src based on the viewport.
   const getSlideSrc = (slide: BackgroundSlide) => {
     if (isMobile && slide.mobile) {
-      return slide.mobile.src
+      return typeof slide.mobile === 'string' ? slide.mobile : slide.mobile.src
     }
-    return slide.desktop.src
+    return typeof slide.desktop === 'string' ? slide.desktop : slide.desktop.src
   }
 
   return (
-    <div className="absolute inset-0 top-[-5rem] max-h-svh min-h-full overflow-x-hidden lg:top-[-5.5rem] select-none">
+    <div className="absolute inset-0 top-[-4rem] max-h-svh min-h-full overflow-x-hidden select-none">
       {/* Current image */}
       <div className="absolute inset-0">
         <Image
-          src={getSlideSrc(slides[currentIndex]) || '/placeholder.svg'}
-          alt={slides[currentIndex].alt}
+          src={getSlideSrc(shuffledSlides[currentIndex]) || '/placeholder.svg'}
+          alt={shuffledSlides[currentIndex].alt}
           fill
-          style={{ objectFit: 'cover', filter: 'brightness(85%)' }}
-          priority
-          onLoadingComplete={() => {
-            if (onLoad) onLoad()
+          style={{ 
+            objectFit: 'cover', 
+            filter: 'brightness(85%)',
+            transition: 'opacity 0.3s ease-in-out'
           }}
+          priority
+          quality={85} // Slightly lower quality for better performance
+          onLoad={() => handleImageLoad(currentIndex)}
+          onError={() => handleImageError(currentIndex)}
+          sizes="100vw"
         />
       </div>
 
       {/* Next image slides in from the right */}
       {nextIndex !== null && (
         <div
-          className={`absolute inset-0 transition-transform duration-1000 ease-in-out ${
+          className={`absolute inset-0 transition-transform ease-in-out ${
             animateNext ? 'translate-x-0' : 'translate-x-full'
           }`}
+          style={{
+            '--transition-duration': `${transitionDuration}ms`,
+            transitionDuration: 'var(--transition-duration)'
+          } as React.CSSProperties}
         >
           <Image
-            src={getSlideSrc(slides[nextIndex]) || '/placeholder.svg'}
-            alt={slides[nextIndex].alt}
+            src={getSlideSrc(shuffledSlides[nextIndex]) || '/placeholder.svg'}
+            alt={shuffledSlides[nextIndex].alt}
             fill
-            style={{ objectFit: 'cover', filter: 'brightness(85%)' }}
+            style={{ 
+              objectFit: 'cover', 
+              filter: 'brightness(85%)',
+              transition: 'opacity 0.3s ease-in-out'
+            }}
             priority
+            quality={85}
+            onLoad={() => handleImageLoad(nextIndex)}
+            onError={() => handleImageError(nextIndex)}
+            sizes="100vw"
           />
+        </div>
+      )}
+      
+      {/* Optional: Show slide counter for debugging */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="absolute top-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded z-10">
+          {currentIndex + 1} / {shuffledSlides.length}
+          {imageErrors.size > 0 && (
+            <div className="text-red-300 text-[10px] mt-1">
+              {imageErrors.size} errors
+            </div>
+          )}
         </div>
       )}
     </div>
